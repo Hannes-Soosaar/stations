@@ -8,6 +8,9 @@ import (
 	"strings"
 )
 
+
+
+
 func GetAndCheckInput() (string, string, string, int, error) {
 
 	var errorMessage string
@@ -21,7 +24,7 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		errorMessage = "too many command line arguments. Correct usage is go run . [path to file containing network map] [start station] [end station] [number of trains]"
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
-
+		//TODO save to an instance
 	networkMap := os.Args[1]
 	startStation := os.Args[2]
 	endStation := os.Args[3]
@@ -33,6 +36,8 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	if err != nil {
 		return "", "", "", 0, fmt.Errorf("error opening network map file: %v", err)
 	}
+
+		//TODO create a file operations file.
 	defer mapFile.Close()
 
 	startStationFound := false
@@ -77,5 +82,6 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
 
+	//TODO  returns error if something is wrong.
 	return networkMap, startStation, endStation, trainAmount, nil
 }
