@@ -7,13 +7,13 @@ import (
 )
 
 func main() {
-	networkMap, startStation, endStation, trainAmount, err := utils.GetAndCheckInput()
+	_, _, _, _, err := utils.GetAndCheckInput()
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Network Map:", networkMap)
-	fmt.Println("Start Station:", startStation)
-	fmt.Println("End Station:", endStation)
-	fmt.Println("Train Amount:", trainAmount)
+	// fmt.Println("Network Map:", networkMap)
+	// fmt.Println("Start Station:", startStation)
+	// fmt.Println("End Station:", endStation)
+	// fmt.Println("Train Amount:", trainAmount)
 }
