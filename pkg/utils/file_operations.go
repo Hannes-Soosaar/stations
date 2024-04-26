@@ -51,9 +51,9 @@ func openMapFromFile(path string) models.StationsMap {
 		}
 
 		if isStationSection {
-			// run function to get a station element and add to the map
+			//TODO run function to get a station element and add to the map
 		} else if isConnectionSection {
-			// run function to add the connection to the station in the map.
+			//TODO run function to add the connection to the station in the map.
 		} else {
 			fmt.Println("not in any section!")
 		}
@@ -93,5 +93,3 @@ func openMapFromFile(path string) models.StationsMap {
 // 		return "", "", "", 0, fmt.Errorf(errorMessage)
 // 	}
 // 	return networkMap, startStation, endStation, trainAmount, nil
-
-//
