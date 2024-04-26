@@ -82,6 +82,7 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
 
-	//TODO  returns error if something is wrong.
+	fmt.Println(networkMap,startStation,endStation,trainAmount)
+	//TODO  returns error if something is wrong
 	return networkMap, startStation, endStation, trainAmount, nil
 }
