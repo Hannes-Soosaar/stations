@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"stations/pkg/utils"
+
+	"gitea.kood.tech/hannessoosaar/stations/pkg/utils"
 )
 
 func main() {
