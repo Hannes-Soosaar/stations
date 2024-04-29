@@ -28,6 +28,5 @@ func getStation(line string) models.Station {
 	newStation.X = x
 	newStation.Y = y
 
-	fmt.Println("New station was added", newStation)
 	return newStation
 }

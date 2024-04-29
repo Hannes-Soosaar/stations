@@ -9,10 +9,11 @@ import (
 )
 
 func openMapFromFile(path string) models.StationsMap {
-
+	var stations []models.Station
 	fmt.Println("OPENING FROM INSTANCE " + path)
 
 	var stationsMap models.StationsMap
+	var connections []string
 
 	mapFile, err := os.Open("../assets/input/" + path) // move the input directory to config
 	if err != nil {
@@ -48,26 +49,26 @@ func openMapFromFile(path string) models.StationsMap {
 			isStationSection = false
 		} else if line == "" {
 			continue
-		} else {
-			fmt.Println("reading content")
 		}
 
 		if isStationSection {
 			if line == "stations:" {
 				continue
 			}
-			getStation(line)
+			station := getStation(line)
+			stations = append(stations, station)
 		} else if isConnectionSection {
 			if line == "connections:" {
 				continue
 			}
-			//TODO run function to add the connection to the station in the map.
+			connections = append(connections, line)
 		} else {
 			fmt.Println("not in any section!")
 		}
 
 	}
-
+	stationsMap = models.StationsMap{StationsMap: stations}
+	getConnections(stationsMap, connections)
 	return stationsMap
 }
 
