@@ -1,15 +1,33 @@
 package utils
 
-// import "gitea.kood.tech/hannessoosaar/stations/pkg/models"
+import (
+	"fmt"
+	"strconv"
+	"strings"
 
-// func getStation(stationParams string) models.Station{
+	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
+)
 
-//   newStation := models.Station;
+func getStation(line string) models.Station {
 
-//   newStation.X=2
-//   newStation.Y=2
+	newStation := models.Station{}
+	params := strings.Split(line, ",")
 
+	newStation.Name = params[0]
 
+	x, err := strconv.Atoi(params[1])
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
 
-// 	return station
-// }
+	y, err := strconv.Atoi(params[2])
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+
+	newStation.X = x
+	newStation.Y = y
+
+	fmt.Println("New station was added", newStation)
+	return newStation
+}

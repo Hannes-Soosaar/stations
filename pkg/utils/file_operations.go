@@ -10,7 +10,7 @@ import (
 
 func openMapFromFile(path string) models.StationsMap {
 
-	fmt.Println("OPENING FROM INSTANCE" + path)
+	fmt.Println("OPENING FROM INSTANCE " + path)
 
 	var stationsMap models.StationsMap
 
@@ -46,13 +46,21 @@ func openMapFromFile(path string) models.StationsMap {
 		} else if line == "connections:" {
 			isConnectionSection = true
 			isStationSection = false
+		} else if line == "" {
+			continue
 		} else {
 			fmt.Println("reading content")
 		}
 
 		if isStationSection {
-			//TODO run function to get a station element and add to the map
+			if line == "stations:" {
+				continue
+			}
+			getStation(line)
 		} else if isConnectionSection {
+			if line == "connections:" {
+				continue
+			}
 			//TODO run function to add the connection to the station in the map.
 		} else {
 			fmt.Println("not in any section!")

@@ -41,7 +41,6 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		return "", "", "", 0, fmt.Errorf("error opening network map file: %v", err)
 	}
 
-
 	defer mapFile.Close()
 	scanner := bufio.NewScanner(mapFile)
 
@@ -55,26 +54,25 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		}
 	}
 
-// File operation error
+	// File operation error
 	if err := scanner.Err(); err != nil {
 		return "", "", "", 0, fmt.Errorf("error scanning network map file: %v", err)
 	}
 
-
-// Map validation
+	// Map validation
 	if !startStationFound {
 		errorMessage += "Entered starting station does not exist in this map. "
 	}
-// Map validation
+	// Map validation
 	if !endStationFound {
 		errorMessage += "Entered ending station does not exist in this map. "
 	}
 
-// input CLI
+	// input CLI
 	if startStation == endStation {
 		errorMessage += "The start and end stations cannot be the same. "
 	}
-// input CLI 
+	// input CLI
 	trainAmount, err := strconv.Atoi(trainAmountStr)
 	if err != nil {
 		errorMessage += "Train amount has to be a number. "
@@ -83,20 +81,20 @@ func GetAndCheckInput() (string, string, string, int, error) {
 			errorMessage += "There has to be at least 1 train. "
 		}
 	}
-// return all CLI errors.
+	// return all CLI errors.
 	if errorMessage != "" {
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
 
-// check CLI input, if OK create instance.
+	// check CLI input, if OK create instance.
 	instance := models.Instance{
 		PathToMap:      os.Args[1],
 		StartStation:   os.Args[2],
 		EndStation:     os.Args[3],
-		NumberOfTrains: os.Args[4], 
+		NumberOfTrains: os.Args[4],
 	}
 
-// create instance stationsMap
+	// create instance stationsMap
 	openMapFromFile(instance.PathToMap)
 	return networkMap, startStation, endStation, trainAmount, nil
 
