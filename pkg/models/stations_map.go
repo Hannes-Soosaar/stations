@@ -1,7 +1,18 @@
 package models
 
-// stores all the nodes(stations) all the edges to the node in station.connection
-// we remove all station that have been visited after each pass.
+import "sync"
+
 type StationsMap struct {
 	StationsMap []Station
+}
+
+var StationsInstance *StationsMap
+var StationsOnce sync.Once
+
+func GetStationsMap() *StationsMap {
+
+	StationsOnce.Do(func() {
+		StationsInstance = &StationsMap{}
+	})
+	return StationsInstance
 }

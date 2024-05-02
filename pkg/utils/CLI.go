@@ -67,7 +67,6 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	if !endStationFound {
 		errorMessage += "Entered ending station does not exist in this map. "
 	}
-
 	// input CLI
 	if startStation == endStation {
 		errorMessage += "The start and end stations cannot be the same. "
@@ -96,6 +95,7 @@ func GetAndCheckInput() (string, string, string, int, error) {
 
 	// create instance stationsMap
 	openMapFromFile(instance.PathToMap)
-	return networkMap, startStation, endStation, trainAmount, nil
 
+	
+	return networkMap, startStation, endStation, trainAmount, nil
 }

@@ -1,5 +1,5 @@
 package utils
-
+// the file is named wrong. It gets connections not connection
 import (
 	"fmt"
 	"strings"
@@ -7,6 +7,28 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
+func mapConnections(cs []string) {
+	fmt.Println(cs)
+
+	var connection models.Connection 
+	 connections := models.GetConnectionsP();
+
+	for _,c :=range cs {
+		// split the connection 
+		split := strings.Split(c, "-")
+		if len(split) == 2 {  // does not add anything with more than one station
+				connection.StationOne = split[0]
+				connection.StationTwo = split[1]
+		} else {
+			fmt.Println("not a valid connection")
+		}
+		connections.Connections= append(connections.Connections,connection)
+
+	}
+	fmt.Println(connections.Connections)
+	//add all connections to the connections struct 
+}
+// The function is named wrong it creates a StationsMap. 
 func getConnections(stationsMap models.StationsMap, connections []string) models.StationsMap {
 	var stationNames []string
 	var splitConnections [][]string
@@ -22,27 +44,27 @@ func getConnections(stationsMap models.StationsMap, connections []string) models
 	}
 
 	for i, stationName := range stationNames {
+
+		fmt.Println(len(splitConnections))
+
 		for _, splitConnection := range splitConnections {
 			if stationName == splitConnection[1] {
 				stationToAppend = splitConnection[0]
-
 			} else if stationName == splitConnection[0] {
 				stationToAppend = splitConnection[1]
 			}
-
 			if stationToAppend != "" {
 				for _, currentStation := range stationsMap.StationsMap {
 					if currentStation.Name == stationToAppend {
 						stationsMap.StationsMap[i].Connections = append(stationsMap.StationsMap[i].Connections, currentStation)
 						stationToAppend = ""
 					}
+					stationsMap.StationsMap[i].Connections = append(stationsMap.StationsMap[i].Connections, currentStation)
 				}
-
 			}
 		}
 	}
 
-	//testing if everything works
 	fmt.Println("")
 	for _, station := range stationsMap.StationsMap {
 		fmt.Printf("Station name: %s\n", station.Name)
