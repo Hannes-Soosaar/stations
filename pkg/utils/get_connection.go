@@ -11,7 +11,7 @@ func mapConnections(cs []string) {
 	fmt.Println(cs)
 
 	var connection models.Connection 
-	 connections := models.GetConnectionsP();
+	connections := models.GetConnectionsP();
 
 	for _,c :=range cs {
 		// split the connection 
@@ -23,36 +23,46 @@ func mapConnections(cs []string) {
 			fmt.Println("not a valid connection")
 		}
 		connections.Connections= append(connections.Connections,connection)
-
 	}
 	fmt.Println(connections.Connections)
-	//add all connections to the connections struct 
 }
+
+
 // The function is named wrong it creates a StationsMap. 
-func getConnections(stationsMap models.StationsMap, connections []string) models.StationsMap {
+func getConnections(stationsMap models.StationsMap) models.StationsMap {
 	var stationNames []string
-	var splitConnections [][]string
+	// var splitConnections [][]string // already done by mapConnections function.
+	allConnections := models.GetConnectionsP()
 	var stationToAppend string = ""
 
 	for _, station := range stationsMap.StationsMap {
 		stationNames = append(stationNames, station.Name)
 	}
 
-	for _, connection := range connections {
-		splitConnection := strings.Split(connection, "-")
-		splitConnections = append(splitConnections, splitConnection)
-	}
+	// for _, connection := range connections {
+	// 	splitConnection := strings.Split(connection, "-")
+	// 	splitConnections = append(splitConnections, splitConnection)
+	// }
 
 	for i, stationName := range stationNames {
+		// fmt.Println(len(splitConnections))
+// Loop over allConnections. OK
 
-		fmt.Println(len(splitConnections))
+		// for _, splitConnection := range splitConnections {
+		// 	if stationName == splitConnection[1] {
+		// 		stationToAppend = splitConnection[0] 
+		// 	} else if stationName == splitConnection[0] {
+		// 		stationToAppend = splitConnection[1]
+		// 	}
 
-		for _, splitConnection := range splitConnections {
-			if stationName == splitConnection[1] {
-				stationToAppend = splitConnection[0]
-			} else if stationName == splitConnection[0] {
-				stationToAppend = splitConnection[1]
+		for _, connection := range allConnections.Connections {
+			if stationName == connection.StationOne {
+				stationToAppend = connection.StationTwo
+			} else if stationName == connection.StationTwo {
+				stationToAppend = connection.StationOne
 			}
+
+// new Function.
 			if stationToAppend != "" {
 				for _, currentStation := range stationsMap.StationsMap {
 					if currentStation.Name == stationToAppend {

@@ -10,7 +10,7 @@ import (
 )
 
 func openMapFromFile(path string){
-	var stations []models.Station
+	var stations models.StationsMap;
 	fmt.Println("OPENING FROM INSTANCE " + path)
 
 	// stationsMap := models.GetStationsMap() // saves the pointer
@@ -59,12 +59,12 @@ func openMapFromFile(path string){
 				continue
 			}
 			station := getStation(line)
-			stations = append(stations, station)
+			stations.StationsMap = append(stations.StationsMap, station)
 		} else if isConnectionSection {
 			if line == "connections:" {
 				continue
 			}
-			connections = append(connections, line) // Create a slice with all stations 
+			connections = append(connections, line)  
 		} else {
 			fmt.Println("not in any section!")
 		}
@@ -73,7 +73,7 @@ func openMapFromFile(path string){
 
 	// mapStations(stations)
 	mapConnections(connections)
-	// getConnections(stationsMap.StationsMap, connections) // Broke this for a bit
+	getConnections(stations) 
 }
 
 // func handleStuff() {
