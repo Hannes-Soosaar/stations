@@ -1,2 +1,2 @@
-TODO: create the input structure to read in the file 
-TODO: create a multi run script for testing.
+TODO: Add connection to station
+TODO: 

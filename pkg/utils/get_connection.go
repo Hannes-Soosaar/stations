@@ -43,7 +43,7 @@ func getConnections(stationsMap models.StationsMap) models.StationsMap {
 	// 	splitConnection := strings.Split(connection, "-")
 	// 	splitConnections = append(splitConnections, splitConnection)
 	// }
-
+//TODO: do we want to iterate through all stations, or all connections ?
 	for i, stationName := range stationNames {
 		// fmt.Println(len(splitConnections))
 // Loop over allConnections. OK
@@ -56,35 +56,40 @@ func getConnections(stationsMap models.StationsMap) models.StationsMap {
 		// 	}
 
 		for _, connection := range allConnections.Connections {
+			fmt.Println(connection)
 			if stationName == connection.StationOne {
 				stationToAppend = connection.StationTwo
 			} else if stationName == connection.StationTwo {
 				stationToAppend = connection.StationOne
 			}
-
-// new Function.
+			fmt.Println(stationToAppend)
+// new Function this is the get station by name..
 			if stationToAppend != "" {
 				for _, currentStation := range stationsMap.StationsMap {
 					if currentStation.Name == stationToAppend {
 						stationsMap.StationsMap[i].Connections = append(stationsMap.StationsMap[i].Connections, currentStation)
 						stationToAppend = ""
 					}
+// findStationByName(stationToAppend)
+// new function add connection to station
+//TODO: add the connection to the station returned from findStationByName 
+//TODO: Do we need to update the stationMap struct?
 					stationsMap.StationsMap[i].Connections = append(stationsMap.StationsMap[i].Connections, currentStation)
 				}
 			}
 		}
 	}
 
-	fmt.Println("")
-	for _, station := range stationsMap.StationsMap {
-		fmt.Printf("Station name: %s\n", station.Name)
-		fmt.Printf("X coordinate: %v\n", station.X)
-		fmt.Printf("Y coordinate: %v\n", station.Y)
-		fmt.Printf("Connected stations:\n")
-		for _, connection := range station.Connections {
-			fmt.Printf("- %s\n", connection.Name)
-		}
-		fmt.Println("----------------------")
-	}
+	// fmt.Println("")
+	// for _, station := range stationsMap.StationsMap {
+	// 	fmt.Printf("Station name: %s\n", station.Name)
+	// 	fmt.Printf("X coordinate: %v\n", station.X)
+	// 	fmt.Printf("Y coordinate: %v\n", station.Y)
+	// 	fmt.Printf("Connected stations:\n")
+	// 	for _, connection := range station.Connections {
+	// 		fmt.Printf("- %s\n", connection.Name)
+	// 	}
+	// 	fmt.Println("----------------------")
+	// }
 	return stationsMap
 }

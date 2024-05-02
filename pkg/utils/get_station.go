@@ -38,7 +38,7 @@ func getStation(line string) models.Station {
 	stations.StationsMap = append(stations.StationsMap, newStation)
 
 	fmt.Println(stations.StationsMap)
-	return newStation // redundant as its already stored in instance
+	return newStation //redundant as its already stored in instance
 }
 
 func findStationByName(name string) models.Station {
@@ -48,6 +48,6 @@ func findStationByName(name string) models.Station {
 		if station.Name == name {
 			matchingStation = station
 		}
-	}
+	}	
 	return matchingStation
 }
