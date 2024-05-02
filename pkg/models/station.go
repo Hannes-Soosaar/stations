@@ -1,14 +1,10 @@
 package models
 
-// a node
-// read in the station from file.
-// create a connections slice with all connected stations
-// need to calculate the distance?
 
 type Station struct {
 	Name        string // filled in from the file
-	X           int    // filled in from the file
-	Y           int    //	filled in from the file
+	X           float64    // filled in from the file
+	Y           float64    //	filled in from the file
 	IsVisited   bool   // set to null
 	IsOccupied  bool   // set to null
 	IsStart     bool   //

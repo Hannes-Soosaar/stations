@@ -9,8 +9,8 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-func openMapFromFile(path string){
-	var stations models.StationsMap;
+func openMapFromFile(path string) {
+	var stations models.StationsMap
 	fmt.Println("OPENING FROM INSTANCE " + path)
 
 	// stationsMap := models.GetStationsMap() // saves the pointer
@@ -53,56 +53,22 @@ func openMapFromFile(path string){
 		} else if line == "" {
 			continue
 		}
-
+		
 		if isStationSection {
 			if line == "stations:" {
 				continue
 			}
-			station := getStation(line)
-			stations.StationsMap = append(stations.StationsMap, station)
+			addStationsToMap(line)
 		} else if isConnectionSection {
 			if line == "connections:" {
 				continue
 			}
-			connections = append(connections, line)  
+			connections = append(connections, line)
 		} else {
 			fmt.Println("not in any section!")
 		}
 
 	}
-
-	// mapStations(stations)
 	mapConnections(connections)
-	getConnections(stations) 
+	getConnections(stations)
 }
-
-// func handleStuff() {
-// 	if err := scanner.Err(); err != nil {
-// 		return "", "", "", 0, fmt.Errorf("error scanning network map file: %v", err)
-// 	}
-
-// 	if !startStationFound {
-// 		errorMessage += "Entered starting station does not exist in this map. "
-// 	}
-
-// 	if !endStationFound {
-// 		errorMessage += "Entered ending station does not exist in this map. "
-// 	}
-
-// 	if startStation == endStation {
-// 		errorMessage += "The start and end stations cannot be the same. "
-// 	}
-
-// 	trainAmount, err := strconv.Atoi(trainAmountStr)
-// 	if err != nil {
-// 		errorMessage += "Train amount has to be a number. "
-// 	} else {
-// 		if trainAmount < 1 {
-// 			errorMessage += "There has to be at least 1 train. "
-// 		}
-// 	}
-
-// 	if errorMessage != "" {
-// 		return "", "", "", 0, fmt.Errorf(errorMessage)
-// 	}
-// 	return networkMap, startStation, endStation, trainAmount, nil

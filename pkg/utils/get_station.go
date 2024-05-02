@@ -8,8 +8,7 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-// this is a set/map function
-func getStation(line string) models.Station {
+func addStationsToMap(line string) {
 
 	newStation := models.Station{}
 	params := strings.Split(line, ",")
@@ -17,7 +16,6 @@ func getStation(line string) models.Station {
 
 	if len(params) < 2 {
 		fmt.Println("There are not enough params")
-		return newStation
 	}
 
 	newStation.Name = params[0]
@@ -32,13 +30,10 @@ func getStation(line string) models.Station {
 		fmt.Println("Error: ", err)
 	}
 
-	newStation.X = x
-	newStation.Y = y
+	newStation.X = float64(x)
+	newStation.Y = float64(y)
 
 	stations.StationsMap = append(stations.StationsMap, newStation)
-
-	fmt.Println(stations.StationsMap)
-	return newStation //redundant as its already stored in instance
 }
 
 func findStationByName(name string) models.Station {
@@ -48,6 +43,19 @@ func findStationByName(name string) models.Station {
 		if station.Name == name {
 			matchingStation = station
 		}
-	}	
+	}
 	return matchingStation
 }
+
+func getStationCord(stationName string)[]float64{
+	stations:= models.GetStationsMap()
+	var stationCoordinates []float64;	
+		for _,station := range stations.StationsMap{
+			if station.Name == stationName {
+				stationCoordinates=append(stationCoordinates, station.X)
+				stationCoordinates=append(stationCoordinates, station.Y)
+			}
+		}
+	return stationCoordinates
+}
+
