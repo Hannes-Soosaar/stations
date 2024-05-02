@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"unicode"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
@@ -30,12 +31,17 @@ func openMapFromFile(path string){
 	for scanner.Scan() {
 
 		line := scanner.Text()
-		for i, r := range line {
+		var clearLine string
+		for _, r := range line {
 			if r == '#' {
-				cleanLine := line[:i]
-				line = cleanLine
+				line = clearLine
 				break
+			} else if unicode.IsSpace(r) {
+				continue
+			} else {
+				clearLine += string(r)
 			}
+			line = clearLine
 		}
 
 		if line == "stations:" {
