@@ -2,20 +2,17 @@ package models
 
 import "sync"
 
-type Connections struct{
-
+type Connections struct {
 	Connections []Connection
-
 }
 
-var instance *Connections 
-var once sync.Once
+var connectionsInstance *Connections
+var connectionsOnce sync.Once
 
 func GetConnectionsP() *Connections {
 
-once.Do(func(){
-	instance = &Connections{}
-})
-	return instance
+	connectionsOnce.Do(func() {
+		connectionsInstance = &Connections{}
+	})
+	return connectionsInstance
 }
-

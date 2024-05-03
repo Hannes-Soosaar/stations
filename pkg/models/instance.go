@@ -1,10 +1,26 @@
 package models
 
-
-//TODO  you can have one instance must do a pointer and singleton ?
 type Instance struct {
-	PathToMap string;
-	StartStation string;
-	EndStation string;
-	NumberOfTrains string;
+	PathToMap      string
+	StartStation   string
+	EndStation     string
+	NumberOfTrains int
+}
+
+var inputInstance *Instance
+
+func InitInstance(path string, startStation string, endStation string, trainAmount int) {
+
+	if inputInstance == nil {
+		inputInstance = &Instance{
+			PathToMap:      path,
+			StartStation:   startStation,
+			EndStation:     endStation,
+			NumberOfTrains: trainAmount,
+		}
+	}
+}
+
+func GetInstance() *Instance {
+	return inputInstance
 }

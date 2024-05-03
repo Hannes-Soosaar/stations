@@ -48,7 +48,7 @@ func AddDistanceToConnection() {
 		deltaCordSqr[0] = math.Pow(stationOneCord[0]-stationTwoCord[0], 2)
 		deltaCordSqr[1] = math.Pow(stationOneCord[1]-stationTwoCord[1], 2)
 		distBetweenStations := math.Sqrt(deltaCordSqr[0] + deltaCordSqr[1])
-		fmt.Println(connection.StationOne+" "+ connection.StationTwo)
+		fmt.Println(connection.StationOne + " " + connection.StationTwo)
 		fmt.Println(distBetweenStations)
 	}
 }

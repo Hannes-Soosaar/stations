@@ -6,8 +6,8 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-func PrintToConsol(){
-	connections:= models.GetConnectionsP()
+func PrintToConsol() {
+	connections := models.GetConnectionsP()
 	stations := models.GetStationsMap()
 	AddDistanceToConnection()
 	fmt.Println("printing singletons")
