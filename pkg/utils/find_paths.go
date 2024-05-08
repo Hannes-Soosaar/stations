@@ -17,9 +17,6 @@ func FindPath() {
 	var path []models.Station
 	var currentStation = firstStation
 	path = append(path, currentStation)
-	currentStation.IsVisited = true
-	fmt.Println("FAR STATION>>> ", findStationByName("far").Connections) //TODO Connections are empty. When switching terminus-far for far-terminus its not empty. Needs to be looked into.
-	// Loop until the current station reaches the end station
 	var visitedStationNames []string
 	for currentStation.Name != endStation {
 
