@@ -38,10 +38,26 @@ func FindPath() {
 		var nextClosestStationName string
 		minDistance := math.Inf(1)
 		for stationName, distance := range distances {
+			skip := false
+			for _, visitedStationName := range visitedStationNames {
+				if stationName == visitedStationName {
+					skip = true
+					break
+				}
+			}
+
+			if skip {
+				continue
+			}
+
 			if distance < minDistance {
 				minDistance = distance
 				nextClosestStationName = stationName
 			}
+		}
+
+		if nextClosestStationName == "" {
+			break
 		}
 
 		nextClosestStation := findStationByName(nextClosestStationName)
