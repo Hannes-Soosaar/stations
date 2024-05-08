@@ -21,9 +21,7 @@ func openMapFromFile(path string) {
 	defer mapFile.Close()
 	isStationSection := false
 	isConnectionSection := false
-
 	scanner := bufio.NewScanner(mapFile)
-
 	for scanner.Scan() {
 		line := scanner.Text()
 		var clearLine string
@@ -47,7 +45,6 @@ func openMapFromFile(path string) {
 		} else if line == "" {
 			continue
 		}
-
 		if isStationSection {
 			if line == "stations:" {
 				continue
@@ -65,29 +62,31 @@ func openMapFromFile(path string) {
 	}
 	mapConnections(connections)
 	getConnections(stations)
-	instance := models.GetInstance()
-	createTrains(instance.NumberOfTrains, instance.StartStation)
+	createTrains()
 }
 
-func createTrains(NumberOfTrains int, StartStation string) models.Trains {
+func createTrains() models.Trains {
+	instance := models.GetInstance()
+
 	var trains models.Trains
 	stations := models.GetStationsMap()
 	var TrainLocation models.Station
 	for _, station := range stations.StationsMap {
-		if StartStation == station.Name {
+		if instance.StartStation == station.Name {
 			TrainLocation = station
 			break
 		}
 	}
-
-	for i := 0; i < NumberOfTrains; i++ {
+	for i := 0; i < instance.NumberOfTrains; i++ {
 		train := models.Train{
 			Id:       i,
 			Location: TrainLocation,
 		}
 		trains.Trains = append(trains.Trains, train)
 	}
-	fmt.Println("Trains: ")
-	fmt.Println(trains)
+	fmt.Println("Instance")
+	for _,train := range trains.Trains{
+		fmt.Println(train.Location.Name)
+	}
 	return trains
 }
