@@ -14,10 +14,14 @@ func FindPath() {
 
 	// Find the first station from the start station
 	firstStation := findStationByName(startStation)
+	firstStation.IsStart = true
+	models.StationsInstance.UpdateStation(firstStation)
+	endingStation := findStationByName(endStation)
+	endingStation.IsFinish = true
+	models.StationsInstance.UpdateStation(endingStation)
 	var path []models.Station
 	var currentStation = firstStation
 	path = append(path, currentStation)
-	var visitedStationNames []string
 	for currentStation.Name != endStation {
 
 		// Calculate distances to connected stations
@@ -29,21 +33,17 @@ func FindPath() {
 				fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
 			}
 		}
-		visitedStationNames = append(visitedStationNames, currentStation.Name)
+
+		currentStation.IsVisited = true
+		models.StationsInstance.UpdateStation(currentStation)
 
 		// Find the next closest station
 		var nextClosestStationName string
 		minDistance := math.Inf(1)
 		for stationName, distance := range distances {
-			skip := false
-			for _, visitedStationName := range visitedStationNames {
-				if stationName == visitedStationName {
-					skip = true
-					break
-				}
-			}
 
-			if skip {
+			station := findStationByName(stationName)
+			if station.IsVisited {
 				continue
 			}
 
@@ -99,4 +99,9 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 		}
 	}
 	return distance
+}
+
+func FindTwoPaths() {
+	FindPath()
+	FindPath()
 }
