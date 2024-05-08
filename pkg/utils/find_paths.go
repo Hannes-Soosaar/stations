@@ -9,7 +9,7 @@ import (
 
 func FindPath() {
 	instance := models.GetInstance()
-	startStation := instance.StartStation
+	startStation := instance.StartStation // TODO sub with train station.
 	endStation := instance.EndStation
 
 	// Find the first station from the start station
@@ -46,17 +46,14 @@ func FindPath() {
 			if station.IsVisited {
 				continue
 			}
-
 			if distance < minDistance {
 				minDistance = distance
 				nextClosestStationName = stationName
 			}
 		}
-
 		if nextClosestStationName == "" {
 			break
 		}
-
 		nextClosestStation := findStationByName(nextClosestStationName)
 
 		// Append the next closest station to the path
@@ -84,7 +81,6 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 
 	// Loop through all connections
 	for _, connection := range allConnections.Connections {
-
 		// Check if the connection matches the provided stations
 		if connection.StationOne == station.Name && connection.StationTwo == connectedStation.Name {
 			// If the connection matches, set the distance and indicate a change in distance

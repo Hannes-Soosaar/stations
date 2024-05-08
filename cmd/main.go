@@ -12,6 +12,8 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
+
+	// TODO Launch instance
 	utils.PrintToConsol()
 	// fmt.Println("Network Map:", networkMap)
 	// fmt.Println("Start Station:", startStation)
