@@ -91,6 +91,9 @@ func GetAndCheckInput() (string, string, string, int, error) {
 
 	// create instance stationsMap
 	openMapFromFile(instance.PathToMap)
+	// find paths
+	// move trains
+
 
 	return networkMap, startStation, endStation, trainAmount, nil
 }

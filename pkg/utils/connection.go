@@ -37,7 +37,7 @@ func getConnections(stationsMap models.StationsMap) models.StationsMap {
 			models.GetStationsMap().UpdateStation(stationTwo)
 			fmt.Println("Station name: ", stationOne.Name, "connection: ", connection.StationTwo)
 		}
-		fmt.Println("FAR STATION>>> ", findStationByName("far").Connections)
+		// fmt.Println("FAR STATION>>> ", findStationByName("far").Connections)
 	}
 	return stationsMap
 }
