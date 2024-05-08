@@ -47,6 +47,7 @@ func openMapFromFile(path string) {
 		} else if line == "" {
 			continue
 		}
+
 		if isStationSection {
 			if line == "stations:" {
 				continue
@@ -64,4 +65,29 @@ func openMapFromFile(path string) {
 	}
 	mapConnections(connections)
 	getConnections(stations)
+	instance := models.GetInstance()
+	createTrains(instance.NumberOfTrains, instance.StartStation)
+}
+
+func createTrains(NumberOfTrains int, StartStation string) models.Trains {
+	var trains models.Trains
+	stations := models.GetStationsMap()
+	var TrainLocation models.Station
+	for _, station := range stations.StationsMap {
+		if StartStation == station.Name {
+			TrainLocation = station
+			break
+		}
+	}
+
+	for i := 0; i < NumberOfTrains; i++ {
+		train := models.Train{
+			Id:       i,
+			Location: TrainLocation,
+		}
+		trains.Trains = append(trains.Trains, train)
+	}
+	fmt.Println("Trains: ")
+	fmt.Println(trains)
+	return trains
 }

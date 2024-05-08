@@ -40,15 +40,14 @@ func findStationByName(name string) models.Station {
 	return matchingStation
 }
 
-func getStationCord(stationName string)[]float64{
-	stations:= models.GetStationsMap()
-	var stationCoordinates []float64;	
-		for _,station := range stations.StationsMap{
-			if station.Name == stationName {
-				stationCoordinates=append(stationCoordinates, station.X)
-				stationCoordinates=append(stationCoordinates, station.Y)
-			}
+func getStationCord(stationName string) []float64 {
+	stations := models.GetStationsMap()
+	var stationCoordinates []float64
+	for _, station := range stations.StationsMap {
+		if station.Name == stationName {
+			stationCoordinates = append(stationCoordinates, station.X)
+			stationCoordinates = append(stationCoordinates, station.Y)
 		}
+	}
 	return stationCoordinates
 }
-

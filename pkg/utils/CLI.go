@@ -86,16 +86,11 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	}
 
 	// check CLI input, if OK create instance.
-	instance := models.Instance{
-		PathToMap:      os.Args[1],
-		StartStation:   os.Args[2],
-		EndStation:     os.Args[3],
-		NumberOfTrains: os.Args[4],
-	}
+	models.InitInstance(networkMap, startStation, endStation, trainAmount)
+	instance := models.GetInstance()
 
 	// create instance stationsMap
 	openMapFromFile(instance.PathToMap)
 
-	
 	return networkMap, startStation, endStation, trainAmount, nil
 }
