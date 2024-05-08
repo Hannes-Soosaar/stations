@@ -12,11 +12,7 @@ import (
 func openMapFromFile(path string) {
 	var stations models.StationsMap
 	fmt.Println("OPENING FROM INSTANCE " + path)
-
-	// stationsMap := models.GetStationsMap() // saves the pointer
-
 	var connections []string
-
 	mapFile, err := os.Open("../assets/input/" + path) // move the input directory to config
 	if err != nil {
 		fmt.Errorf("error opening network map file: %v", err) // move error text to internal error_codes
@@ -29,7 +25,6 @@ func openMapFromFile(path string) {
 	scanner := bufio.NewScanner(mapFile)
 
 	for scanner.Scan() {
-
 		line := scanner.Text()
 		var clearLine string
 		for _, r := range line {
@@ -43,7 +38,6 @@ func openMapFromFile(path string) {
 			}
 			line = clearLine
 		}
-
 		if line == "stations:" {
 			isStationSection = true
 			isConnectionSection = false

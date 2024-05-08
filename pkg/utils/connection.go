@@ -13,7 +13,6 @@ func mapConnections(cs []string) {
 	var connection models.Connection
 	connections := models.GetConnectionsP()
 	for _, c := range cs {
-		//TODO check for white spaces ?
 		split := strings.Split(c, "-")
 		if len(split) == 2 {
 			connection.StationOne = split[0]
@@ -23,7 +22,6 @@ func mapConnections(cs []string) {
 		}
 		connections.Connections = append(connections.Connections, connection)
 	}
-
 }
 
 func getConnections(stationsMap models.StationsMap) models.StationsMap {
