@@ -27,5 +27,5 @@ func (s *Trains) UpdateTrainStation(TrainAt Station,Id int) error {
 			return nil
 		}
 	}
-	return fmt.Errorf("station with id %i not found", Id)
+	return fmt.Errorf("station with id %d not found", Id)
 }
