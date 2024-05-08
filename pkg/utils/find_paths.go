@@ -20,6 +20,7 @@ func FindPath() {
 	currentStation.IsVisited = true
 	fmt.Println("FAR STATION>>> ", findStationByName("far").Connections) //TODO Connections are empty. When switching terminus-far for far-terminus its not empty. Needs to be looked into.
 	// Loop until the current station reaches the end station
+	var visitedStationNames []string
 	for currentStation.Name != endStation {
 
 		// Calculate distances to connected stations
@@ -31,20 +32,16 @@ func FindPath() {
 				fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
 			}
 		}
+		visitedStationNames = append(visitedStationNames, currentStation.Name)
 
 		// Find the next closest station
 		var nextClosestStationName string
 		minDistance := math.Inf(1)
 		for stationName, distance := range distances {
-			station := findStationByName(stationName)
-			if !station.IsVisited && distance < minDistance {
+			if distance < minDistance {
 				minDistance = distance
 				nextClosestStationName = stationName
 			}
-		}
-
-		if nextClosestStationName == "" {
-			break
 		}
 
 		nextClosestStation := findStationByName(nextClosestStationName)
@@ -54,7 +51,6 @@ func FindPath() {
 
 		// Update current station for the next iteration
 		currentStation = nextClosestStation
-		currentStation.IsVisited = true
 	}
 
 	// Create a Path struct and add it to Paths instance
