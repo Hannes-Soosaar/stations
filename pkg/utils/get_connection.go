@@ -29,11 +29,17 @@ func mapConnections(cs []string) {
 func getConnections(stationsMap models.StationsMap) models.StationsMap {
 	allConnections := models.GetConnectionsP()
 	for _, connection := range allConnections.Connections {
-		station := findStationByName(connection.StationOne)
-		if station.Name == connection.StationOne {
-			station.Connections = append(station.Connections, findStationByName(connection.StationTwo))
-			models.GetStationsMap().UpdateStation(station) //! We needed to update the stationMap struct
+		stationOne := findStationByName(connection.StationOne)
+		stationTwo := findStationByName(connection.StationTwo)
+		fmt.Println("First station: ", stationOne.Name, "Second station: ", stationTwo.Name)
+		if stationOne.Name == connection.StationOne {
+			stationOne.Connections = append(stationOne.Connections, findStationByName(connection.StationTwo))
+			stationTwo.Connections = append(stationTwo.Connections, findStationByName(connection.StationOne))
+			models.GetStationsMap().UpdateStation(stationOne) //! We needed to update the stationMap struct
+			models.GetStationsMap().UpdateStation(stationTwo)
+			fmt.Println("Station name: ", stationOne.Name, "connection: ", connection.StationTwo)
 		}
+		fmt.Println("FAR STATION>>> ", findStationByName("far").Connections)
 	}
 	return stationsMap
 }

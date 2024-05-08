@@ -25,8 +25,11 @@ func FindPath() {
 		// Calculate distances to connected stations
 		distances := make(map[string]float64)
 		for _, connectedStation := range currentStation.Connections {
-			distance := FindStationConnectionsDistance(currentStation, connectedStation)
-			distances[connectedStation.Name] = distance
+			if !connectedStation.IsVisited {
+				distance := FindStationConnectionsDistance(currentStation, connectedStation)
+				distances[connectedStation.Name] = distance
+				fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
+			}
 		}
 
 		// Find the next closest station
@@ -40,6 +43,10 @@ func FindPath() {
 			}
 		}
 
+		if nextClosestStationName == "" {
+			break
+		}
+
 		nextClosestStation := findStationByName(nextClosestStationName)
 
 		// Append the next closest station to the path
@@ -47,6 +54,7 @@ func FindPath() {
 
 		// Update current station for the next iteration
 		currentStation = nextClosestStation
+		currentStation.IsVisited = true
 	}
 
 	// Create a Path struct and add it to Paths instance
