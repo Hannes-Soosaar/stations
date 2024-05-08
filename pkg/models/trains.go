@@ -13,19 +13,30 @@ var instanceT *Trains
 var onceT sync.Once
 
 func GetTrains() *Trains {
-
 	onceT.Do(func() {
 		instanceT = &Trains{}
 	})
 	return instanceT
 }
 
-func (s *Trains) UpdateTrainStation(TrainAt Station,Id int) error {
-	for i, train := range s.Trains {
-		if train.Id == Id {
-			s.Trains[i].Location = TrainAt
-			return nil
-		}
-	}
-	return fmt.Errorf("station with id %d not found", Id)
+func (s *Trains) AddTrainStation(trainId int ,TrainAt Station,){
+	var tempTrain Train
+	tempTrain.Id = trainId
+	tempTrain.Location= TrainAt
+	s.Trains = append(s.Trains, tempTrain )
+}
+
+func (s *Trains) UpdateTrainStation(trainId int ,TrainAt Station,){
+	fmt.Printf("Adding Train to %d \n ", trainId)
+	fmt.Printf("the lendght of the string of trains is: %d \n",len(s.Trains))
+	var tempTrain Train
+	tempTrain.Id = trainId
+	tempTrain.Location= TrainAt
+	s.Trains = append(s.Trains, tempTrain )
+
+
+	// for i, _ := range s.Trains {
+	// 		s.Trains[i].Id = trainId
+	// 		s.Trains[i].Location = TrainAt
+	// }
 }

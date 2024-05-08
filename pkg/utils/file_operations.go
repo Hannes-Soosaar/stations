@@ -17,7 +17,6 @@ func openMapFromFile(path string) {
 	if err != nil {
 		fmt.Errorf("error opening network map file: %v", err) // move error text to internal error_codes
 	}
-
 	defer mapFile.Close()
 	isStationSection := false
 	isConnectionSection := false
@@ -58,9 +57,9 @@ func openMapFromFile(path string) {
 		} else {
 			fmt.Println("not in any section!")
 		}
-
 	}
+	
 	mapConnections(connections) // should use the pointer
 	getConnections(stations)	// should use the pointer
-	createTrains()				// moved to use pointers
+	createTrains()				// TODO left off here 	
 }
