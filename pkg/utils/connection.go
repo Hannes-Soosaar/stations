@@ -42,7 +42,6 @@ func getConnections(stationsMap models.StationsMap) models.StationsMap {
 		}
 		// fmt.Println("FAR STATION>>> ", findStationByName("far").Connections)
 	}
-	AddDistanceToConnection()
 	return stationsMap
 }
 
@@ -59,7 +58,4 @@ func AddDistanceToConnection() {
 		fmt.Println(distBetweenStations)
 		models.GetConnectionsP().UpdateConnections(connection)
 	}
-	fmt.Println("ALL CONNECTIONS!")
-	fmt.Println(allConnections)
-	fmt.Println("ALL CONNECTIONS END")
 }

@@ -37,12 +37,8 @@ func createTrains(){
 }
 
 func MoveTrains(){
-
 	trains:= models.GetTrains()
-	fmt.Println("HERE")
-	fmt.Println(trains.Trains)
 	for _,train := range trains.Trains{
-		fmt.Println("Moving Trains!")
 		GetShortestPath(train.Id)
 		//TODO add a function to move the train
 	}

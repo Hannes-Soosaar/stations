@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"log"
 	"sync"
 )
 
@@ -20,8 +21,12 @@ func GetConnectionsP() *Connections {
 }
 
 func (s *Connections) UpdateConnections(c Connection) error {
+	// fmt.Println("Updating Connection %d", c.Distance)
+		fmt.Println("Getting connections")
+		fmt.Println(c)
 	for i, connection := range s.Connections {
-		if connection.StationOne == c.StationOne || connection.StationTwo == c.StationTwo {
+		log.Println(connection)
+		if connection.StationOne == c.StationOne && connection.StationTwo == c.StationTwo {
 			s.Connections[i] = c
 			return nil
 		}
