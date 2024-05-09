@@ -13,7 +13,6 @@ var StationsInstance *StationsMap
 var StationsOnce sync.Once
 
 func GetStationsMap() *StationsMap {
-
 	StationsOnce.Do(func() {
 		StationsInstance = &StationsMap{}
 	})

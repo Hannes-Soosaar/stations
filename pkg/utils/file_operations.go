@@ -17,13 +17,10 @@ func openMapFromFile(path string) {
 	if err != nil {
 		fmt.Errorf("error opening network map file: %v", err) // move error text to internal error_codes
 	}
-
 	defer mapFile.Close()
 	isStationSection := false
 	isConnectionSection := false
-
 	scanner := bufio.NewScanner(mapFile)
-
 	for scanner.Scan() {
 		line := scanner.Text()
 		var clearLine string
@@ -47,7 +44,6 @@ func openMapFromFile(path string) {
 		} else if line == "" {
 			continue
 		}
-
 		if isStationSection {
 			if line == "stations:" {
 				continue
@@ -61,33 +57,9 @@ func openMapFromFile(path string) {
 		} else {
 			fmt.Println("not in any section!")
 		}
-
 	}
-	mapConnections(connections)
-	getConnections(stations)
-	instance := models.GetInstance()
-	createTrains(instance.NumberOfTrains, instance.StartStation)
-}
-
-func createTrains(NumberOfTrains int, StartStation string) models.Trains {
-	var trains models.Trains
-	stations := models.GetStationsMap()
-	var TrainLocation models.Station
-	for _, station := range stations.StationsMap {
-		if StartStation == station.Name {
-			TrainLocation = station
-			break
-		}
-	}
-
-	for i := 0; i < NumberOfTrains; i++ {
-		train := models.Train{
-			Id:       i,
-			Location: TrainLocation,
-		}
-		trains.Trains = append(trains.Trains, train)
-	}
-	fmt.Println("Trains: ")
-	fmt.Println(trains)
-	return trains
+	
+	mapConnections(connections) // should use the pointer
+	getConnections(stations)	// should use the pointer
+	createTrains()				// TODO left off here 	
 }
