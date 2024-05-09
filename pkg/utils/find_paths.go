@@ -8,7 +8,7 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-func FindPath(uniquePaths map[string]struct{}) bool {
+func FindPath() bool {
 	instance := models.GetInstance()
 	startStation := instance.StartStation 
 	endStation := instance.EndStation
@@ -69,33 +69,37 @@ func FindPath(uniquePaths map[string]struct{}) bool {
 		currentStation = nextClosestStation
 	}
 
-	// Create a Path struct and add it to Paths instance
+	// if the last found station of this path is not the required end station, this code will not add the path and will exit the function.
 	lastStation := path[len(path)-1]
 	if lastStation.Name != endStation {
 		newUniquePathFound := false
 		return newUniquePathFound
 	}
 
+	// Create a Path struct
 	pathStruct := models.Path{PathStations: path}
 	pathsInstance := models.GetPaths()
 	MoveTrains() //? This is HS trial function
-	//WIP
+	// if there's at least 1 unique path found, this code will check if the next path is identical to the previous one.
+	// If it is then it will not add it to the list of paths and the function will return since all unique paths have been found.
+	if pathsInstance.Paths != nil {
+		if len(pathStruct.PathStations) == len(pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations) {
+			equal := true
+			for i, station := range pathStruct.PathStations {
+				if station.Name != pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations[i].Name {
+					equal = false
+					break
+				}
+			}
 
-	// if len(pathStruct.PathStations) == len(pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations) {
-	// 	equal := true
-	// 	for i, station := range pathStruct.PathStations {
-	// 		if station.Name != pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations[i].Name {
-	// 			equal = false
-	// 			break
-	// 		}
-	// 	}
+			if equal {
+				newUniquePathFound := false
+				return newUniquePathFound
+			}
+		}
+	}
 
-	// 	if equal {
-	// 		newUniquePathFound := false
-	// 		return newUniquePathFound
-	// 	}
-	// }
-
+	//if all checks are passed that means an unique path has been found so it will be added here.
 	pathsInstance.AddPath(pathStruct)
 
 	fmt.Println("Path:")
@@ -132,12 +136,11 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 }
 
 func FindAllUniquePaths() {
-	uniquePaths := make(map[string]struct{})
 
 	newUniquePathFound := true
 
 	for newUniquePathFound {
-		newUniquePathFound = FindPath(uniquePaths)
+		newUniquePathFound = FindPath()
 	}
 }
 
