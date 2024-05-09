@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
