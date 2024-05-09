@@ -79,6 +79,23 @@ func FindPath(uniquePaths map[string]struct{}) bool {
 	pathStruct := models.Path{PathStations: path}
 	pathsInstance := models.GetPaths()
 
+	//WIP
+
+	// if len(pathStruct.PathStations) == len(pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations) {
+	// 	equal := true
+	// 	for i, station := range pathStruct.PathStations {
+	// 		if station.Name != pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations[i].Name {
+	// 			equal = false
+	// 			break
+	// 		}
+	// 	}
+
+	// 	if equal {
+	// 		newUniquePathFound := false
+	// 		return newUniquePathFound
+	// 	}
+	// }
+
 	pathsInstance.AddPath(pathStruct)
 
 	fmt.Println("Path:")
