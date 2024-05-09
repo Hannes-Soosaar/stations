@@ -7,7 +7,7 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-func FindPath() {
+func FindPath(uniquePaths map[string]struct{}) bool {
 	instance := models.GetInstance()
 	startStation := instance.StartStation // TODO sub with train station.
 	endStation := instance.EndStation
@@ -64,6 +64,12 @@ func FindPath() {
 	}
 
 	// Create a Path struct and add it to Paths instance
+	lastStation := path[len(path)-1]
+	if lastStation.Name != endStation {
+		newUniquePathFound := false
+		return newUniquePathFound
+	}
+
 	pathStruct := models.Path{PathStations: path}
 	pathsInstance := models.GetPaths()
 	pathsInstance.AddPath(pathStruct)
@@ -72,6 +78,9 @@ func FindPath() {
 	for _, station := range path {
 		fmt.Println(station.Name)
 	}
+
+	newUniquePathFound := true
+	return newUniquePathFound
 }
 
 func FindStationConnectionsDistance(station models.Station, connectedStation models.Station) float64 {
@@ -97,7 +106,12 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 	return distance
 }
 
-func FindTwoPaths() {
-	FindPath()
-	FindPath()
+func FindAllUniquePaths() {
+	uniquePaths := make(map[string]struct{})
+
+	newUniquePathFound := true
+
+	for newUniquePathFound {
+		newUniquePathFound = FindPath(uniquePaths)
+	}
 }

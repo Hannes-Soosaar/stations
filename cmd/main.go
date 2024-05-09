@@ -19,5 +19,5 @@ func main() {
 	// fmt.Println("Start Station:", startStation)
 	// fmt.Println("End Station:", endStation)
 	// fmt.Println("Train Amount:", trainAmount)
-	utils.FindTwoPaths()
+	utils.FindAllUniquePaths()
 }
