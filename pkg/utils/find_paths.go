@@ -7,12 +7,7 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-<<<<<<< HEAD
 func FindPath(uniquePaths map[string]struct{}) bool {
-=======
-func FindPath() {
-	
->>>>>>> 81bc5c0ecd8ae73ed59713f684bb95a305d44678
 	instance := models.GetInstance()
 
 	startStation := instance.StartStation // TODO sub with train station.
@@ -34,6 +29,7 @@ func FindPath() {
 	var currentStation = firstStation
 	path = append(path, currentStation)
 	for currentStation.Name != endStation {
+
 		// Calculate distances to connected stations
 		distances := make(map[string]float64)
 		for _, connectedStation := range currentStation.Connections {
@@ -43,12 +39,15 @@ func FindPath() {
 				fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
 			}
 		}
+
 		currentStation.IsVisited = true
 		models.StationsInstance.UpdateStation(currentStation)
+
 		// Find the next closest station
 		var nextClosestStationName string
 		minDistance := math.Inf(1)
 		for stationName, distance := range distances {
+
 			station := findStationByName(stationName)
 			if station.IsVisited {
 				continue
@@ -62,12 +61,14 @@ func FindPath() {
 			break
 		}
 		nextClosestStation := findStationByName(nextClosestStationName)
+
 		// Append the next closest station to the path
 		path = append(path, nextClosestStation)
 
 		// Update current station for the next iteration
 		currentStation = nextClosestStation
 	}
+
 	// Create a Path struct and add it to Paths instance
 	lastStation := path[len(path)-1]
 	if lastStation.Name != endStation {
@@ -77,7 +78,9 @@ func FindPath() {
 
 	pathStruct := models.Path{PathStations: path}
 	pathsInstance := models.GetPaths()
+
 	pathsInstance.AddPath(pathStruct)
+
 	fmt.Println("Path:")
 	for _, station := range path {
 		fmt.Println(station.Name)
@@ -92,6 +95,7 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 	var distance float64
 	var distanceChange bool = false
 	allConnections := models.GetConnectionsP()
+
 	// Loop through all connections
 	for _, connection := range allConnections.Connections {
 		// Check if the connection matches the provided stations
@@ -110,7 +114,6 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 	return distance
 }
 
-<<<<<<< HEAD
 func FindAllUniquePaths() {
 	uniquePaths := make(map[string]struct{})
 
@@ -119,19 +122,13 @@ func FindAllUniquePaths() {
 	for newUniquePathFound {
 		newUniquePathFound = FindPath(uniquePaths)
 	}
-=======
-// Finds two paths, each pass flips the pa
-func FindTwoPaths() {
-	FindPath()
-	FindPath()
->>>>>>> 81bc5c0ecd8ae73ed59713f684bb95a305d44678
 }
 
 func GetShortestPath(trainID int) string {
-	fmt.Printf("Getting path for Train id: %d\n" , trainID)
+	fmt.Printf("Getting path for Train id: %d\n", trainID)
 
 	currentStation := findStationByName(findCurrentStationName(trainID))
-	var trainToMoveTo string	
+	var trainToMoveTo string
 
 	fmt.Println(currentStation.ConnObj) // TODO the ConnObj does not contain distance
 
@@ -143,11 +140,11 @@ func GetShortestPath(trainID int) string {
 				trainToMoveTo = stationConnections.StationTwo
 			} else if currentStation.Name == stationConnections.StationTwo {
 				trainToMoveTo = stationConnections.StationTwo
-			}else{
+			} else {
 				fmt.Println("Something is off!")
 			}
 		}
-	} 
+	}
 	fmt.Println("THE TRAINS NEXT STATION IS")
 	fmt.Println(trainToMoveTo)
 	return trainToMoveTo
@@ -155,5 +152,5 @@ func GetShortestPath(trainID int) string {
 
 // logic is to find the next station that is the shortest distance away
 func findClosestStation(connection models.Connections) {
-	
+
 }
