@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	// "log"
 	"math"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
@@ -36,7 +37,7 @@ func FindPath() bool {
 			if !connectedStation.IsVisited {
 				distance := FindStationConnectionsDistance(currentStation, connectedStation)
 				distances[connectedStation.Name] = distance
-				fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
+				// fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
 			}
 		}
 
@@ -146,11 +147,10 @@ func FindAllUniquePaths() {
 
 func GetShortestPath(trainID int) string {
 	currentStation := findStationByName(findCurrentStationName(trainID))
+	log.Println(currentStation.ConnObj)
 	var trainToMoveTo string
-
-	log.Println(currentStation.ConnObj) // TODO the ConnObj does not contain distance
-
 	var distance float64
+
 	for _, stationConnections := range currentStation.ConnObj {
 		if stationConnections.Distance == 0 || stationConnections.Distance < distance {
 			distance = stationConnections.Distance

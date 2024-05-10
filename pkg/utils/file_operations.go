@@ -61,5 +61,4 @@ func openMapFromFile(path string) {
 	
 	mapConnections(connections) // should use the pointer
 	getConnections(stations)	// should use the pointer
-	createTrains()				// TODO left off here 	
 }

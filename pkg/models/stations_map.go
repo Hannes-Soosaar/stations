@@ -29,3 +29,22 @@ func (s *StationsMap) UpdateStation(stationToUpdate Station) error {
 	}
 	return fmt.Errorf("station with name %s not found", stationToUpdate.Name)
 }
+func (s *StationsMap) UpdateStationConnection(connectionToUpdate Connection) error {
+	fmt.Println("updating connection")
+
+	for _, station := range s.StationsMap {
+		for _, connection := range station.ConnObj {
+			fmt.Println("Station ONE:")
+			fmt.Println(connection.StationOne)
+			fmt.Println(connection.StationTwo)
+			fmt.Println("Station TWO:")
+			fmt.Println(connectionToUpdate.StationOne)
+
+			fmt.Println(connectionToUpdate.StationTwo)
+			if connection.StationOne == connectionToUpdate.StationOne && connection.StationTwo == connectionToUpdate.StationTwo {
+				connection.Distance = connectionToUpdate.Distance
+			}
+		}
+	}
+	return fmt.Errorf("station with name %s not found", connectionToUpdate.StationOne)
+}

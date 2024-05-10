@@ -1,15 +1,14 @@
 package utils
 
 import (
+	// "log"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
-
+//! Works
 func createTrains(){
 	instance := models.GetInstance()
-	// trains := models.GetTrains() 
-	
-
+	trains := models.GetTrains() 
 	stations := models.GetStationsMap()
 	var TrainLocation models.Station
 	for _, station := range stations.StationsMap {
@@ -18,30 +17,26 @@ func createTrains(){
 			break
 		}
 	}
-
 	for i := 0; i < instance.NumberOfTrains; i++ {
-		models.GetTrains().AddTrainStation(i, TrainLocation)
-	// 	train := models.Train{
-	// 		Id:       i,
-	// 		Location: TrainLocation,
-	// 	}
-	// 	trains.Trains = append(trains.Trains, train)
+		train := models.Train{
+			Id:       i,
+			Location: TrainLocation,
+		}
+		// log.Println("Adding train ")
+		// log.Println(train.Id)
+		trains.Trains = append(trains.Trains, train)
 	}
-
-	// fmt.Println("Instance")
-	// for _,train := range trains.Trains{
-	// 	fmt.Println(train.Location.Name)
-	// }
-	// return trains
 }
 
+//!Works
 func MoveTrains(){
 	trains:= models.GetTrains()
 	for _,train := range trains.Trains{
+	// log.Println(train.Location.Name)
 		GetShortestPath(train.Id)
-		//TODO add a function to move the train
 	}
 }
+
 func findCurrentStationName(trainId int) string {
 	trains := models.GetTrains()
 	currentStation :=""

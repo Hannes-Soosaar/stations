@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	// "fmt"
 	"sync"
 )
 
@@ -27,8 +27,8 @@ func (s *Trains) AddTrainStation(trainId int ,TrainAt Station,){
 }
 
 func (s *Trains) UpdateTrainStation(trainId int ,TrainAt Station,){
-	fmt.Printf("Adding Train to %d \n ", trainId)
-	fmt.Printf("the lendght of the string of trains is: %d \n",len(s.Trains))
+	// fmt.Printf("Adding Train to %d \n ", trainId)
+	// fmt.Printf("the lendght of the string of trains is: %d \n",len(s.Trains))
 	var tempTrain Train
 	tempTrain.Id = trainId
 	tempTrain.Location= TrainAt

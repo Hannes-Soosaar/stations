@@ -22,13 +22,17 @@ func GetConnectionsP() *Connections {
 
 func (s *Connections) UpdateConnections(c Connection) error {
 	// fmt.Println("Updating Connection %d", c.Distance)
-		fmt.Println("Getting connections")
-		fmt.Println(c)
+		// fmt.Println("Getting connections")
+		// fmt.Println(c)
 	for i, connection := range s.Connections {
-		log.Println(connection)
 		if connection.StationOne == c.StationOne && connection.StationTwo == c.StationTwo {
-			s.Connections[i] = c
+			log.Println("updating")
+			log.Println(s.Connections) 
+			log.Println(c)
+			s.Connections[i].Distance = c.Distance
 			return nil
+		}else{
+			s.Connections[i] = s.Connections[i]
 		}
 	}
 	return fmt.Errorf("station with station name  %s not found", c.StationOne)

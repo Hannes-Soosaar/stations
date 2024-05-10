@@ -3,12 +3,13 @@ package utils
 // the file is named wrong. It gets connections not connection
 import (
 	"fmt"
+	"log"
 	"math"
 	"strings"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
-
+//? Reads in the Map
 func mapConnections(cs []string) {
 	var connection models.Connection
 	//This creates the empty connections structure at the pointer
@@ -23,10 +24,12 @@ func mapConnections(cs []string) {
 		}
 		connections.Connections = append(connections.Connections, connection)// initializes the first struct?
 	}
+	
 }
 
 func getConnections(stationsMap models.StationsMap) models.StationsMap {
 	allConnections := models.GetConnectionsP()
+	fmt.Println(allConnections) // no distances!
 	for _, connection := range allConnections.Connections {
 		stationOne := findStationByName(connection.StationOne)
 		stationTwo := findStationByName(connection.StationTwo)
@@ -47,6 +50,7 @@ func getConnections(stationsMap models.StationsMap) models.StationsMap {
 
 func AddDistanceToConnection() {
 	allConnections := models.GetConnectionsP()
+	log.Println(allConnections) // no distances
 	deltaCordSqr := make([]float64, 2)
 	for i, connection := range allConnections.Connections {
 		stationOneCord := getStationCord(connection.StationOne)
@@ -55,7 +59,8 @@ func AddDistanceToConnection() {
 		deltaCordSqr[1] = math.Pow(stationOneCord[1]-stationTwoCord[1], 2)
 		distBetweenStations := math.Sqrt(deltaCordSqr[0] + deltaCordSqr[1])
 		allConnections.Connections[i].Distance = distBetweenStations
-		fmt.Println(distBetweenStations)
-		models.GetConnectionsP().UpdateConnections(connection)
+		fmt.Printf("Distance to station  %f.2 \n",distBetweenStations)
 	}
+	addConnectionToStations()
+	createTrains()
 }
