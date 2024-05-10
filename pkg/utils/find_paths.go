@@ -98,10 +98,10 @@ func FindPath() bool {
 
 	//if all checks are passed that means an unique path has been found so it will be added here.
 	pathsInstance.AddPath(pathStruct)
-	// fmt.Println("Path:")
-	// for _, station := range path {
-	// 	fmt.Println(station.Name)
-	// }
+	fmt.Println("Path:")
+	for _, station := range path {
+		fmt.Println(station.Name)
+	}
 	newUniquePathFound := true
 	return newUniquePathFound
 }
@@ -158,4 +158,51 @@ func GetShortestPath(trainID int) string {
 // logic is to find the next station that is the shortest distance away
 func findClosestStation(connection models.Connections) {
 
+}
+
+func FindPathCombinationWithLeastTurns() {
+	allPossiblePaths := models.GetPaths()
+	numOfPaths := len(allPossiblePaths.Paths)
+	var pathsToSimulate []models.Path
+	var simulationResults []int
+
+	if numOfPaths == 0 {
+		fmt.Println("Error: there are no valid paths!")
+	}
+
+	for i := 0; i < numOfPaths; i++ {
+		pathsToSimulate = append(pathsToSimulate, allPossiblePaths.Paths[i])
+		simulationResults = append(simulationResults, simulateTurns(pathsToSimulate))
+	}
+
+	fmt.Println("Simulation results: ")
+	fmt.Println("First path only turns: ", simulationResults[0])
+	// fmt.Println("First and second path turns: ", simulationResults[1])
+	// fmt.Println("1, 2, 3 path turns: ", simulationResults[2])
+}
+
+func simulateTurns(paths []models.Path) int {
+	instance := models.GetInstance()
+	trainAmount := instance.NumberOfTrains
+	numOfPaths := len(paths)
+	var minTurnCounts []int
+	var turnCount int = 0
+	//minimum turn count is the amount of turns that it takes for the first train to reach the end
+
+	for i := 0; i < numOfPaths; i++ {
+		minTurnCount := len(paths[i].PathStations) - 1
+		minTurnCounts = append(minTurnCounts, minTurnCount)
+		minTurnCount = 0
+	}
+
+	for trainAmount > 0 {
+		turnCount++
+
+		for i := 0; i < numOfPaths; i++ {
+			if turnCount >= minTurnCounts[i] {
+				trainAmount--
+			}
+		}
+	}
+	return turnCount
 }
