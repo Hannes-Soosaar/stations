@@ -10,7 +10,6 @@ type Instance struct {
 var inputInstance *Instance
 
 func InitInstance(path string, startStation string, endStation string, trainAmount int) {
-
 	if inputInstance == nil {
 		inputInstance = &Instance{
 			PathToMap:      path,

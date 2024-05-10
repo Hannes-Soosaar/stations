@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"log"
 	"sync"
 )
 
@@ -29,20 +30,15 @@ func (s *StationsMap) UpdateStation(stationToUpdate Station) error {
 	}
 	return fmt.Errorf("station with name %s not found", stationToUpdate.Name)
 }
+
+// ! It is important to use the exact iteration number, if you do not, it will update a copy not the reference!
 func (s *StationsMap) UpdateStationConnection(connectionToUpdate Connection) error {
-	fmt.Println("updating connection")
-
-	for _, station := range s.StationsMap {
-		for _, connection := range station.ConnObj {
-			fmt.Println("Station ONE:")
-			fmt.Println(connection.StationOne)
-			fmt.Println(connection.StationTwo)
-			fmt.Println("Station TWO:")
-			fmt.Println(connectionToUpdate.StationOne)
-
-			fmt.Println(connectionToUpdate.StationTwo)
+	log.Println(connectionToUpdate)
+	for i, station := range s.StationsMap {
+		for j, connection := range station.ConnObj {
+			fmt.Println(connection)
 			if connection.StationOne == connectionToUpdate.StationOne && connection.StationTwo == connectionToUpdate.StationTwo {
-				connection.Distance = connectionToUpdate.Distance
+				s.StationsMap[i].ConnObj[j].Distance = connectionToUpdate.Distance
 			}
 		}
 	}

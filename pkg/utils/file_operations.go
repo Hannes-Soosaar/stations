@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"os"
 	"unicode"
-
-	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
+	// "gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
 func openMapFromFile(path string) {
-	var stations models.StationsMap
-	fmt.Println("OPENING FROM INSTANCE " + path)
+	// fmt.Println("OPENING FROM INSTANCE " + path)
 	var connections []string
 	mapFile, err := os.Open("../assets/input/" + path) // move the input directory to config
 	if err != nil {
@@ -58,7 +56,7 @@ func openMapFromFile(path string) {
 			fmt.Println("not in any section!")
 		}
 	}
-	
+
 	mapConnections(connections) // should use the pointer
-	getConnections(stations)	// should use the pointer
+	getConnections()            // Change to use a pointer
 }

@@ -13,8 +13,9 @@ func main() {
 		return
 	}
 
+	utils.AddDistanceToConnection()
 	// TODO Launch instance
-	utils.PrintToConsol()
+	// utils.PrintToConsol()
 	// fmt.Println("Network Map:", networkMap)
 	// fmt.Println("Start Station:", startStation)
 	// fmt.Println("End Station:", endStation)

@@ -15,7 +15,6 @@ var instancePaths *Paths
 var oncePath sync.Once
 
 func GetPaths() *Paths {
-
 	oncePath.Do(func() {
 		instancePaths = &Paths{}
 	})

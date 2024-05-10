@@ -2,8 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"log"
-	// "log"
 	"math"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
@@ -11,10 +9,8 @@ import (
 
 func FindPath() bool {
 	instance := models.GetInstance()
-	startStation := instance.StartStation 
+	startStation := instance.StartStation
 	endStation := instance.EndStation
-
-
 
 	// Find the first station from the start station
 	firstStation := findStationByName(startStation)
@@ -102,12 +98,10 @@ func FindPath() bool {
 
 	//if all checks are passed that means an unique path has been found so it will be added here.
 	pathsInstance.AddPath(pathStruct)
-
-	fmt.Println("Path:")
-	for _, station := range path {
-		fmt.Println(station.Name)
-	}
-
+	// fmt.Println("Path:")
+	// for _, station := range path {
+	// 	fmt.Println(station.Name)
+	// }
 	newUniquePathFound := true
 	return newUniquePathFound
 }
@@ -117,7 +111,6 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 	var distance float64
 	var distanceChange bool = false
 	allConnections := models.GetConnectionsP()
-
 	// Loop through all connections
 	for _, connection := range allConnections.Connections {
 		// Check if the connection matches the provided stations
@@ -137,9 +130,7 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 }
 
 func FindAllUniquePaths() {
-
 	newUniquePathFound := true
-
 	for newUniquePathFound {
 		newUniquePathFound = FindPath()
 	}
@@ -147,10 +138,8 @@ func FindAllUniquePaths() {
 
 func GetShortestPath(trainID int) string {
 	currentStation := findStationByName(findCurrentStationName(trainID))
-	log.Println(currentStation.ConnObj)
 	var trainToMoveTo string
 	var distance float64
-
 	for _, stationConnections := range currentStation.ConnObj {
 		if stationConnections.Distance == 0 || stationConnections.Distance < distance {
 			distance = stationConnections.Distance
