@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"log"
 	"sync"
 )
 
@@ -33,10 +32,8 @@ func (s *StationsMap) UpdateStation(stationToUpdate Station) error {
 
 // ! It is important to use the exact iteration number, if you do not, it will update a copy not the reference!
 func (s *StationsMap) UpdateStationConnection(connectionToUpdate Connection) error {
-	log.Println(connectionToUpdate)
 	for i, station := range s.StationsMap {
 		for j, connection := range station.ConnObj {
-			fmt.Println(connection)
 			if connection.StationOne == connectionToUpdate.StationOne && connection.StationTwo == connectionToUpdate.StationTwo {
 				s.StationsMap[i].ConnObj[j].Distance = connectionToUpdate.Distance
 			}

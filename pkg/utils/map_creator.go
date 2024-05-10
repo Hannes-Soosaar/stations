@@ -17,13 +17,12 @@ func addConnectionToStations() {
 		for _, station := range stations.StationsMap {
 			// checks all station
 			if station.Name == connection.StationOne {
-				// if the station matches find the corresponding station, and add to the structure
-				// stations.StationsMap[i].Connections = append(stations.StationsMap[i].Connections, station) //TODO need to find and update not add
 				models.StationsInstance.UpdateStationConnection(connection) //TODO need to find and update not add
 			}
 		}
 	}
 	for _, station := range stations.StationsMap {
+		log.Println(station.Name)
 		log.Println(station.ConnObj)
 	}
 
