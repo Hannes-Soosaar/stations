@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"math"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
@@ -26,44 +25,77 @@ func FindPath() bool {
 	var currentStation = firstStation
 	path = append(path, currentStation)
 	for currentStation.Name != endStation {
+		// // Calculate distances to connected stations
+		// distances := make(map[string]float64)
+		// for _, connectedStation := range currentStation.Connections {
+		// 	if !connectedStation.IsVisited {
+		// 		//distance := FindStationConnectionsDistance(currentStation, connectedStation)
+		// 		distance := 1.0 //changed distance to 1 to check if pathfinder works
+		// 		distances[connectedStation.Name] = distance
+		// 		// fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
+		// 	}
+		// }
 
-		// Calculate distances to connected stations
-		distances := make(map[string]float64)
-		for _, connectedStation := range currentStation.Connections {
-			if !connectedStation.IsVisited {
-				distance := FindStationConnectionsDistance(currentStation, connectedStation)
-				distances[connectedStation.Name] = distance
-				// fmt.Println("Current station: ", currentStation.Name, "Connected station: ", connectedStation.Name, "Map: ", distances)
+		// currentStation.IsVisited = true
+		// models.StationsInstance.UpdateStation(currentStation)
+
+		// // Find the next closest station
+		// var nextClosestStationName string
+		// minDistance := math.Inf(1)
+		// for stationName, distance := range distances {
+
+		// 	station := findStationByName(stationName)
+		// 	if station.IsVisited {
+		// 		continue
+		// 	}
+		// 	if distance < minDistance {
+		// 		minDistance = distance
+		// 		nextClosestStationName = stationName
+		// 	}
+
+		// }
+		// if nextClosestStationName == "" {
+		// 	break
+		// }
+		// nextClosestStation := findStationByName(nextClosestStationName)
+
+		// // Append the next closest station to the path
+		// path = append(path, nextClosestStation)
+
+		// // Update current station for the next iteration
+		// currentStation = nextClosestStation
+		var foundNextStation bool = false
+		for !foundNextStation {
+			connectionsList := currentStation.ConnObj
+			for _, connections := range connectionsList {
+				if !currentStation.IsVisited {
+					if currentStation.Name == connections.StationOne {
+						stationToAppend := findStationByName(connections.StationTwo)
+						path = append(path, stationToAppend)
+						// for _, station := range path {
+						// 	fmt.Println(station.Name)
+						// }
+						currentStation = stationToAppend
+
+						foundNextStation = true
+						break
+					} else if currentStation.Name == connections.StationTwo {
+						stationToAppend := findStationByName(connections.StationOne)
+						path = append(path, stationToAppend)
+						// for _, station := range path {
+						// 	fmt.Println(station.Name)
+						// }
+						currentStation = stationToAppend
+
+						foundNextStation = true
+						break
+					}
+				}
 			}
 		}
 
 		currentStation.IsVisited = true
 		models.StationsInstance.UpdateStation(currentStation)
-
-		// Find the next closest station
-		var nextClosestStationName string
-		minDistance := math.Inf(1)
-		for stationName, distance := range distances {
-
-			station := findStationByName(stationName)
-			if station.IsVisited {
-				continue
-			}
-			if distance < minDistance {
-				minDistance = distance
-				nextClosestStationName = stationName
-			}
-		}
-		if nextClosestStationName == "" {
-			break
-		}
-		nextClosestStation := findStationByName(nextClosestStationName)
-
-		// Append the next closest station to the path
-		path = append(path, nextClosestStation)
-
-		// Update current station for the next iteration
-		currentStation = nextClosestStation
 	}
 
 	// if the last found station of this path is not the required end station, this code will not add the path and will exit the function.
@@ -74,9 +106,11 @@ func FindPath() bool {
 	}
 
 	// Create a Path struct
+
 	pathStruct := models.Path{PathStations: path}
 	pathsInstance := models.GetPaths()
 	MoveTrains() //? This is HS trial function
+
 	// if there's at least 1 unique path found, this code will check if the next path is identical to the previous one.
 	// If it is then it will not add it to the list of paths and the function will return since all unique paths have been found.
 	if pathsInstance.Paths != nil {
@@ -98,6 +132,7 @@ func FindPath() bool {
 
 	//if all checks are passed that means an unique path has been found so it will be added here.
 	pathsInstance.AddPath(pathStruct)
+	fmt.Println("----------------------------")
 	fmt.Println("Path:")
 	for _, station := range path {
 		fmt.Println(station.Name)
@@ -134,6 +169,9 @@ func FindAllUniquePaths() {
 	for newUniquePathFound {
 		newUniquePathFound = FindPath()
 	}
+	fmt.Println("----------------------------")
+
+	FindPathCombWithLeastTurns()
 }
 
 func GetShortestPath(trainID int) string {
@@ -160,11 +198,12 @@ func findClosestStation(connection models.Connections) {
 
 }
 
-func FindPathCombinationWithLeastTurns() {
+func FindPathCombWithLeastTurns() {
 	allPossiblePaths := models.GetPaths()
 	numOfPaths := len(allPossiblePaths.Paths)
 	var pathsToSimulate []models.Path
 	var simulationResults []int
+	count := numOfPaths
 
 	if numOfPaths == 0 {
 		fmt.Println("Error: there are no valid paths!")
@@ -176,9 +215,14 @@ func FindPathCombinationWithLeastTurns() {
 	}
 
 	fmt.Println("Simulation results: ")
-	fmt.Println("First path only turns: ", simulationResults[0])
+	comment := "Path %d results: "
+	for j := 0; j < count; j++ {
+		fmt.Printf(comment, j+1)
+		fmt.Println(simulationResults[j])
+	}
+	// fmt.Println("First path only turns: ", simulationResults[0])
 	// fmt.Println("First and second path turns: ", simulationResults[1])
-	// fmt.Println("1, 2, 3 path turns: ", simulationResults[2])
+	// fmt.Println("First, second and third path turns: ", simulationResults[2])
 }
 
 func simulateTurns(paths []models.Path) int {
