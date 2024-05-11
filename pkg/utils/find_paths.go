@@ -13,7 +13,7 @@ func FindPath() bool {
 	// Find the first station from the start station
 	firstStation := findStationByName(startStation)
 	firstStation.IsStart = true
-
+	firstStation.IsVisited = true
 	models.StationsInstance.UpdateStation(firstStation)
 	endingStation := findStationByName(endStation)
 	endingStation.IsFinish = true
@@ -25,11 +25,6 @@ func FindPath() bool {
 
 	for {
 		path = append(path, currentStation)
-		fmt.Println("----------------------------")
-		fmt.Println("Path:")
-		for _, station := range path {
-			fmt.Println(station.Name)
-		}
 		if currentStation.Name == endStation {
 			// Path found
 			pathStruct := models.Path{PathStations: path}
@@ -38,26 +33,24 @@ func FindPath() bool {
 				return false
 			}
 			pathsInstance.AddPath(pathStruct)
+			fmt.Println("----------------------------")
+			fmt.Println("Path:")
+			for _, station := range path {
+				fmt.Println(station.Name)
+			}
+			firstStation.IsVisited = false
+			models.StationsInstance.UpdateStation(firstStation)
+			endingStation.IsVisited = false
+			models.StationsInstance.UpdateStation(endingStation)
 			return true
 		}
 
 		var nextStation models.Station
 		found := false
-		// fmt.Println(currentStation.Name)
-		// fmt.Println("IS IT EMPTY NOW?", currentStation.Connections) //Why is this empty???
-		// fmt.Println(currentStation.IsVisited)
-		// fmt.Println(findStationByName("near").Connections)
-
 		for _, connectedStation := range currentStation.Connections {
-			// fmt.Println("Current station: ", currentStation.Name)
-			// fmt.Println("Current station connections: ", currentStation.Connections)
-			// fmt.Println("Connected: ", connectedStation.Name)
-			// fmt.Println("IsVisited: ", connectedStation.IsVisited)
-			// fmt.Println("Connections of connected station: ", findStationByName(connectedStation.Name).Connections)
-
-			if !connectedStation.IsVisited {
-				fmt.Println(connectedStation.IsVisited)
-				nextStation = connectedStation
+			if !findStationByName(connectedStation.Name).IsVisited {
+				fmt.Println()
+				nextStation = findStationByName(connectedStation.Name)
 				found = true
 				break
 			}
@@ -71,6 +64,7 @@ func FindPath() bool {
 		models.StationsInstance.UpdateStation(nextStation)
 		currentStation = nextStation
 	}
+
 }
 
 func isUniquePath(pathsInstance *models.Paths, pathStruct models.Path) bool {
