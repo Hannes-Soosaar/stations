@@ -1,148 +1,113 @@
 package utils
 
 import (
+	"container/list"
 	"fmt"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-func FindPath() bool {
-	instance := models.GetInstance()
-	startStation := instance.StartStation
-	endStation := instance.EndStation
-	// Find the first station from the start station
-	firstStation := findStationByName(startStation)
-	firstStation.IsStart = true
-	firstStation.IsVisited = true
-	models.StationsInstance.UpdateStation(firstStation)
-	endingStation := findStationByName(endStation)
-	endingStation.IsFinish = true
-
-	models.StationsInstance.UpdateStation(endingStation)
-
-	var path []models.Station
-	currentStation := firstStation
-
-	for {
-		path = append(path, currentStation)
-		if currentStation.Name == endStation {
-			// Path found
-			pathStruct := models.Path{PathStations: path}
-			pathsInstance := models.GetPaths()
-			if !isUniquePath(pathsInstance, pathStruct) {
-				return false
-			}
-			pathsInstance.AddPath(pathStruct)
-			fmt.Println("----------------------------")
-			fmt.Println("Path:")
-			for _, station := range path {
-				fmt.Println(station.Name)
-			}
-			firstStation.IsVisited = false
-			models.StationsInstance.UpdateStation(firstStation)
-			endingStation.IsVisited = false
-			models.StationsInstance.UpdateStation(endingStation)
-			return true
-		}
-
-		var nextStation models.Station
-		found := false
-		for _, connectedStation := range currentStation.Connections {
-			if !findStationByName(connectedStation.Name).IsVisited {
-				fmt.Println()
-				nextStation = findStationByName(connectedStation.Name)
-				found = true
-				break
-			}
-		}
-
-		if !found {
-			return false // No unvisited connected stations, exit loop
-		}
-
-		nextStation.IsVisited = true
-		models.StationsInstance.UpdateStation(nextStation)
-		currentStation = nextStation
-	}
-
+type QueueNode struct {
+	Station *models.Station
+	Prev    *QueueNode
 }
 
-func isUniquePath(pathsInstance *models.Paths, pathStruct models.Path) bool {
-	// if there's at least 1 unique path found, this code will check if the next path is identical to the previous one.
-	// If it is then it will not add it to the list of paths and the function will return since all unique paths have been found.
-	if pathsInstance.Paths != nil {
-		if len(pathStruct.PathStations) == len(pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations) {
-			equal := true
-			for i, station := range pathStruct.PathStations {
-				if station.Name != pathsInstance.Paths[len(pathsInstance.Paths)-1].PathStations[i].Name {
-					equal = false
-					break
-				}
+func FindPathWithBFS() ([]string, bool) {
+
+	instance := models.GetInstance()
+
+	start := findStationByName(instance.StartStation)
+	start.IsVisited = true
+	start.IsStart = true
+	models.StationsInstance.UpdateStation(start)
+
+	end := findStationByName(instance.EndStation)
+	end.IsFinish = true
+	models.StationsInstance.UpdateStation(end)
+
+	queue := list.New()
+	queue.PushBack(&QueueNode{Station: &start, Prev: nil})
+
+	for queue.Len() > 0 {
+		element := queue.Front()
+		queue.Remove(element)
+		node := element.Value.(*QueueNode)
+		current := node.Station
+
+		if current.Name == instance.EndStation {
+			var path []string
+			for node != nil {
+				path = append([]string{node.Station.Name}, path...)
+				node = node.Prev
+			}
+			fmt.Println("Path:")
+			for _, stationName := range path {
+				fmt.Println(stationName)
+			}
+			fmt.Println("----------------------------")
+			return path, true
+		}
+
+		for _, connectedStation := range findStationByName(current.Name).Connections {
+			// fmt.Println("Current station: ", current.Name)
+			// fmt.Println("Connected station: ", connectedStation.Name)
+			// fmt.Println("Remaining connections: ", findStationByName(current.Name).Connections)
+			// fmt.Println("Is connected station visited? ", connectedStation.IsVisited)
+			neighbor := findStationByName(connectedStation.Name)
+			// fmt.Println("neighbor station visited? ", neighbor.IsVisited)
+
+			if !connectedStation.IsVisited {
+				neighbor.IsVisited = false
+			} else if connectedStation.IsVisited {
+				neighbor.IsVisited = true
 			}
 
-			if equal {
-				return false
+			if connectedStation.Name == instance.StartStation {
+				neighbor.IsVisited = true
+			}
+
+			if !neighbor.IsVisited {
+				neighbor.IsVisited = true
+				models.StationsInstance.UpdateStation(neighbor)
+				// fmt.Println("Next station name and isvisited:", neighbor.Name, ",", neighbor.IsVisited)
+				queue.PushBack(&QueueNode{Station: &neighbor, Prev: node})
+				if queue.Len() > 250 {
+					return nil, false
+				}
 			}
 		}
+
 	}
-	return true
+	return nil, false
 }
 
 func FindAllUniquePaths() {
 	newUniquePathFound := true
+	var pathNames []string
 	for newUniquePathFound {
-		newUniquePathFound = FindPath()
+		pathNames, newUniquePathFound = FindPathWithBFS()
+		if pathNames != nil {
+			// Update stations based on the path
+			for i := 0; i < len(pathNames)-1; i++ {
+				station := findStationByName(pathNames[i])
+				nextStation := findStationByName(pathNames[i+1])
+				station.RemoveConnection(nextStation.Name)
+				models.StationsInstance.UpdateStation(station)
+			}
+
+			// Add the path to the list of paths
+			var path []models.Station
+			for _, stationName := range pathNames {
+				station := findStationByName(stationName)
+				path = append(path, station)
+			}
+			pathStruct := models.Path{PathStations: path}
+			pathsInstance := models.GetPaths()
+			pathsInstance.AddPath(pathStruct)
+		}
 	}
-	fmt.Println("----------------------------")
 
 	FindPathCombWithLeastTurns()
-}
-
-// TODO only pass in strings.
-func FindStationConnectionsDistance(station models.Station, connectedStation models.Station) float64 {
-	var distance float64
-	var distanceChange bool = false
-	allConnections := models.GetConnectionsP()
-	// Loop through all connections
-	for _, connection := range allConnections.Connections {
-		// Check if the connection matches the provided stations
-		if connection.StationOne == station.Name && connection.StationTwo == connectedStation.Name {
-			// If the connection matches, set the distance and indicate a change in distance
-			distance = connection.Distance
-			distanceChange = true
-		} else if connection.StationTwo == station.Name && connection.StationOne == connectedStation.Name {
-			distance = connection.Distance
-			distanceChange = true
-		}
-		if distanceChange {
-			break
-		}
-	}
-	return distance
-}
-
-func GetShortestPath(trainID int) string {
-	currentStation := findStationByName(findCurrentStationName(trainID))
-	var trainToMoveTo string
-	var distance float64
-	for _, stationConnections := range currentStation.ConnObj {
-		if stationConnections.Distance == 0 || stationConnections.Distance < distance {
-			distance = stationConnections.Distance
-			if currentStation.Name == stationConnections.StationOne {
-				trainToMoveTo = stationConnections.StationTwo
-			} else if currentStation.Name == stationConnections.StationTwo {
-				trainToMoveTo = stationConnections.StationTwo
-			} else {
-				fmt.Println("Something is off!")
-			}
-		}
-	}
-	return trainToMoveTo
-}
-
-// logic is to find the next station that is the shortest distance away
-func findClosestStation(connection models.Connections) {
-
 }
 
 func FindPathCombWithLeastTurns() {
@@ -196,4 +161,46 @@ func simulateTurns(paths []models.Path) int {
 		}
 	}
 	return turnCount
+}
+
+// TODO only pass in strings.
+func FindStationConnectionsDistance(station models.Station, connectedStation models.Station) float64 {
+	var distance float64
+	var distanceChange bool = false
+	allConnections := models.GetConnectionsP()
+	// Loop through all connections
+	for _, connection := range allConnections.Connections {
+		// Check if the connection matches the provided stations
+		if connection.StationOne == station.Name && connection.StationTwo == connectedStation.Name {
+			// If the connection matches, set the distance and indicate a change in distance
+			distance = connection.Distance
+			distanceChange = true
+		} else if connection.StationTwo == station.Name && connection.StationOne == connectedStation.Name {
+			distance = connection.Distance
+			distanceChange = true
+		}
+		if distanceChange {
+			break
+		}
+	}
+	return distance
+}
+
+func GetShortestPath(trainID int) string {
+	currentStation := findStationByName(findCurrentStationName(trainID))
+	var trainToMoveTo string
+	var distance float64
+	for _, stationConnections := range currentStation.ConnObj {
+		if stationConnections.Distance == 0 || stationConnections.Distance < distance {
+			distance = stationConnections.Distance
+			if currentStation.Name == stationConnections.StationOne {
+				trainToMoveTo = stationConnections.StationTwo
+			} else if currentStation.Name == stationConnections.StationTwo {
+				trainToMoveTo = stationConnections.StationTwo
+			} else {
+				fmt.Println("Something is off!")
+			}
+		}
+	}
+	return trainToMoveTo
 }

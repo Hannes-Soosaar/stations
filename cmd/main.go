@@ -20,5 +20,9 @@ func main() {
 	// fmt.Println("Start Station:", startStation)
 	// fmt.Println("End Station:", endStation)
 	// fmt.Println("Train Amount:", trainAmount)
+	//
 	utils.FindAllUniquePaths()
+	//
+	//paths := utils.BreadthFirstSearch()
+	//fmt.Println("Valid path:", paths)
 }
