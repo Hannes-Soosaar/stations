@@ -202,3 +202,19 @@ func GetShortestPath(trainID int) string {
 	}
 	return trainToMoveTo
 }
+
+func GetNextStation(trainID int) string {
+	train := findTrainById(trainID)                         //! possible pointe error
+	currentStation := findStationByName(train.LocationName) // finds where the train is now
+	// find where the train was
+	var trainToMoveTo string
+	// var distance float64
+	for _, stationConnections := range currentStation.ConnObj { // gets all connections from current station
+
+		if stationConnections.StationOne == currentStation.Name {
+
+		}
+
+	}
+	return trainToMoveTo
+}
