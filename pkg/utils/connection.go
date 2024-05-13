@@ -44,7 +44,6 @@ func getConnections() {
 
 func AddDistanceToConnection() {
 	allConnections := models.GetConnectionsP()
-
 	deltaCordSqr := make([]float64, 2)
 	for i, connection := range allConnections.Connections {
 		stationOneCord := getStationCord(connection.StationOne)

@@ -1,10 +1,6 @@
 package utils
 
 import (
-	// "fmt"
-
-	"log"
-
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
@@ -21,9 +17,9 @@ func addConnectionToStations() {
 			}
 		}
 	}
-	for _, station := range stations.StationsMap {
-		log.Println(station.Name)
-		log.Println(station.ConnObj)
-	}
+	// for _, station := range stations.StationsMap {
+	// 	log.Println(station.Name)
+	// 	log.Println(station.ConnObj)
+	// }
 
 }

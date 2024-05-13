@@ -136,11 +136,29 @@ func FindAllUniquePaths() {
 	}
 }
 
-func GetShortestPath(trainID int) string {
-	currentStation := findStationByName(findCurrentStationName(trainID))
+func GetNextStation(trainID int) string {
+	train := findTrainById(trainID) //! possible pointe error
+	currentStation := findStationByName(train.LocationName) // finds where the train is now
+																		// find where the train was
 	var trainToMoveTo string
 	var distance float64
-	for _, stationConnections := range currentStation.ConnObj {
+	for _, stationConnections := range currentStation.ConnObj { // gets all connections from current station
+		
+		if stationConnections.StationOne == currentStation.Name {
+			
+		} 
+
+	}
+	return trainToMoveTo
+}
+
+
+
+
+
+// logic is to find the next station that is the shortest distance away
+func findClosestStation(connection models.Connections) {
+
 		if stationConnections.Distance == 0 || stationConnections.Distance < distance {
 			distance = stationConnections.Distance
 			if currentStation.Name == stationConnections.StationOne {
@@ -151,13 +169,6 @@ func GetShortestPath(trainID int) string {
 				fmt.Println("Something is off!")
 			}
 		}
-	}
-	return trainToMoveTo
-}
-
-// logic is to find the next station that is the shortest distance away
-func findClosestStation(connection models.Connections) {
-
 }
 
 func FindPathCombinationWithLeastTurns() {
@@ -188,13 +199,11 @@ func simulateTurns(paths []models.Path) int {
 	var minTurnCounts []int
 	var turnCount int = 0
 	//minimum turn count is the amount of turns that it takes for the first train to reach the end
-
 	for i := 0; i < numOfPaths; i++ {
 		minTurnCount := len(paths[i].PathStations) - 1
 		minTurnCounts = append(minTurnCounts, minTurnCount)
 		minTurnCount = 0
 	}
-
 	for trainAmount > 0 {
 		turnCount++
 

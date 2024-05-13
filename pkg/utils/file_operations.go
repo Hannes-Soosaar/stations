@@ -57,6 +57,6 @@ func openMapFromFile(path string) {
 		}
 	}
 
-	mapConnections(connections) // should use the pointer
-	getConnections()            // Change to use a pointer
+	mapConnections(connections) 
+	getConnections()            
 }
