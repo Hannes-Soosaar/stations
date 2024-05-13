@@ -12,7 +12,6 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
-
 	utils.AddDistanceToConnection()
 	// TODO Launch instance
 	// utils.PrintToConsol()

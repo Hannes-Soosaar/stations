@@ -144,13 +144,11 @@ func simulateTurns(paths []models.Path) int {
 	var minTurnCounts []int
 	var turnCount int = 0
 	//minimum turn count is the amount of turns that it takes for the first train to reach the end
-
 	for i := 0; i < numOfPaths; i++ {
 		minTurnCount := len(paths[i].PathStations) - 1
 		minTurnCounts = append(minTurnCounts, minTurnCount)
 		minTurnCount = 0
 	}
-
 	for trainAmount > 0 {
 		turnCount++
 
