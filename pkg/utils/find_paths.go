@@ -127,10 +127,9 @@ func FindPathCombWithLeastTurns() {
 	}
 
 	fmt.Println("Simulation results: ")
-	comment := "Path %d results: "
+	comment := "Using the first %d path(s): %d turns will be made\n"
 	for j := 0; j < count; j++ {
-		fmt.Printf(comment, j+1)
-		fmt.Println(simulationResults[j])
+		fmt.Printf(comment, j+1, simulationResults[j])
 	}
 	// fmt.Println("First path only turns: ", simulationResults[0])
 	// fmt.Println("First and second path turns: ", simulationResults[1])
