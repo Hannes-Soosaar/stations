@@ -20,14 +20,6 @@ func createTrains() {
 	log.Println(trains.Trains)
 }
 
-// // !Works
-// func MoveTrains() {
-// 	trains := models.GetTrains()
-// 	for _, train := range trains.Trains {
-// 		// GetNextStation(train.Id)
-// 	}
-// }
-
 func findCurrentStationName(trainId int) string {
 	trains := models.GetTrains()
 	currentStation := ""
@@ -38,7 +30,6 @@ func findCurrentStationName(trainId int) string {
 	}
 	return currentStation
 }
-
 func findTrainById(trainId int) models.Train {
 	trains := models.GetTrains()
 	var currentTrain models.Train
@@ -58,9 +49,4 @@ func findLastStationName(trainId int) string {
 		}
 	}
 	return lastStation
-}
-
-func updatedTrainCurrentStation(trainId int, newStation string) {
-	// add function to update the location to the new station
-	// same time it needs to set the current station to the last station.
 }

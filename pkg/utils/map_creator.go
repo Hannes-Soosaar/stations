@@ -17,8 +17,4 @@ func addConnectionToStations() {
 			}
 		}
 	}
-	// for _, station := range stations.StationsMap {
-	// 	log.Println(station.Name)
-	// 	log.Println(station.ConnObj)
-	// }
 }

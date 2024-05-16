@@ -35,7 +35,7 @@ func (s *Trains) RemoveTrainById(trainId int) {
 }
 
 func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
-	fmt.Printf("T%d %s \n", trainId, TrainAt)
+	fmt.Printf("T %d %s \n", trainId, TrainAt)
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains[i].CurrentStation = TrainAt
@@ -43,7 +43,7 @@ func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
 	}
 }
 func (s *Trains) UpdateTrainNextLocation(trainId int, TrainAt string) {
-
+	fmt.Printf("T%d, %s \n", trainId, TrainAt)
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains[i].NextStation = TrainAt

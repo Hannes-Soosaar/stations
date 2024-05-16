@@ -56,7 +56,6 @@ func openMapFromFile(path string) {
 			fmt.Println("not in any section!")
 		}
 	}
-
-	mapConnections(connections) 
-	getConnections()            
+	mapConnections(connections)
+	getConnections()
 }

@@ -185,39 +185,43 @@ func simulateTurns(paths []models.Path) int {
 }
 func simulateTurnsHS() int {
 	fmt.Println("***************************")
-
 	instance := models.GetInstance()
 	// trainAmount := instance.NumberOfTrains
-	// endStation := instance.EndStation
 	trains := models.GetTrains()
+	startAndFinish := make(map[string]bool)
+	startAndFinish[instance.EndStation] = true
+	startAndFinish[instance.StartStation] = true
+	// occupiedStations := make(map[string]bool)
 	// routs := models.GetRouts().Routs
 	// numOfPaths := len(routs)
 	// tempCount := len(trains.Trains)
+	// routs := make(map[string]bool)
+	var trainMoved bool
 
 	// numOfPaths := len(paths)
-	// find The next station
-	// Start moving trains from the starting station to the end station
-	// when a train is at the end station remove from the Trains obj.
 	// continue while the trains object has trains. finish when all trains have been moved
-
 	for len(trains.Trains) > 0 { // checks to see how many trains are waiting
 
-		for _, train := range trains.Trains { // go through the trains
+		for i, train := range trains.Trains {
+
+			// Need to operate the trains.
+			// Check if there are any free routs
 
 			if train.NextStation == instance.EndStation {
-				fmt.Printf("Train At finish %s", train.CurrentStation)
+				fmt.Printf("T %d At finish %s\n", train.Id, train.CurrentStation)
 				models.GetTrains().RemoveTrainById(train.Id)
-			} else {
+			} else if !trainMoved {
 				models.GetTrains().UpdateTrainLocation(train.Id, GetNextStationOnPath(train.CurrentStation, 0)) // updates the next station
 				models.GetTrains().UpdateTrainNextLocation(train.Id, GetNextStationOnPath(train.CurrentStation, 0))
+
+				fmt.Println(i)
+			} else {
+				trainMoved = true
 			}
-			// updatedTrainCurrentStation(train.Id, nextLocation) // makes the move
 		}
 	}
-
 	// var minTurnCounts []int
 	var turnCount int = 0
-
 	// for i := 0; i < numOfPaths; i++ {
 	// 	minTurnCount := len(paths[i].PathStations) - 1
 	// 	minTurnCounts = append(minTurnCounts, minTurnCount)
