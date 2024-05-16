@@ -21,5 +21,4 @@ func addConnectionToStations() {
 	// 	log.Println(station.Name)
 	// 	log.Println(station.ConnObj)
 	// }
-
 }

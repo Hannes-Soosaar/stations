@@ -1,8 +1,9 @@
 package models
 
 import (
-	// "fmt"
+	"fmt"
 	"sync"
+	// "golang.org/x/text/unicode/rangetable"
 )
 
 type Trains struct {
@@ -22,20 +23,30 @@ func GetTrains() *Trains {
 func (s *Trains) AddTrainStation(trainId int, TrainAt Station) {
 	var tempTrain Train
 	tempTrain.Id = trainId
-	tempTrain.LocationName = TrainAt.Name
+	tempTrain.CurrentStation = TrainAt.Name
 	s.Trains = append(s.Trains, tempTrain)
 }
-
-//	func (s *Trains) UpdateTrainStation(trainId int, TrainAt string) {
-//		var tempTrain Train
-//		tempTrain.Id = trainId
-//		tempTrain.LocationName = TrainAt
-//		s.Trains = append(s.Trains, tempTrain)
-//	}
-func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
+func (s *Trains) RemoveTrainById(trainId int) {
 	for i, train := range s.Trains {
 		if train.Id == trainId {
-			s.Trains[i].LocationName = TrainAt
+			s.Trains = append(s.Trains[:i], s.Trains[i+1:]...)
+		}
+	}
+}
+
+func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
+	fmt.Printf("T%d %s \n", trainId, TrainAt)
+	for i, train := range s.Trains {
+		if train.Id == trainId {
+			s.Trains[i].CurrentStation = TrainAt
+		}
+	}
+}
+func (s *Trains) UpdateTrainNextLocation(trainId int, TrainAt string) {
+
+	for i, train := range s.Trains {
+		if train.Id == trainId {
+			s.Trains[i].NextStation = TrainAt
 		}
 	}
 }
