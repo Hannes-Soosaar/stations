@@ -255,8 +255,14 @@ func simulateTurnsHS2() {
 		}
 		routeStationsMap[i] = stationMap
 	}
-	fmt.Print("we have this many routs")
-	fmt.Println(len(routs.Routs))
+	// fmt.Print("we have this many routs")
+	// fmt.Println(len(routs.Routs))+
+	for i, train := range trains.Trains {
+		j := i % len(routs.Routs)
+		fmt.Printf("Length of routs.Routs: %d\n", len(routs.Routs))
+		models.GetTrains().UpdateTrainOnRout(train.Id, j)
+		fmt.Printf("train T%d on Rout%d \n", train.Id, train.TrainOnRout)
+	}
 
 	//
 
@@ -269,8 +275,8 @@ func simulateTurnsHS2() {
 				stationMap[nextStation] = false
 			}
 		}
-		fmt.Println(trains.Trains[k].CurrentStation)
-		fmt.Println(k)
+		// fmt.Println(trains.Trains[k].CurrentStation)
+		// fmt.Println(k)
 		waitForKeyPress()
 	}
 
@@ -285,15 +291,15 @@ func simulateTurnsHS2() {
 
 		for _, train1 := range trains.Trains { // go through the
 
-			nextStation = GetNextStationOnPath(train1.CurrentStation, 0)
+			nextStation = GetNextStationOnPath(train1.CurrentStation, 0) // instead of 0 we will have the TrainOnRout
 			models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 			// !WORKS
 			if train1.CurrentStation == instance.EndStation {
 				models.GetTrains().RemoveTrainById(train1.Id)
 			}
-			fmt.Print("T ")
-			fmt.Println(train1.Id)
-			fmt.Println(train1.CurrentStation)
+			fmt.Printf("T%d-%s #On rout-%d", train1.Id, train1.CurrentStation, train1.TrainOnRout)
+			// fmt.Println(train1.Id)
+			// fmt.Println(train1.CurrentStation)
 
 			// // ? this is not working however it is comaring the Trains
 			// for j, train2 := range trains.Trains {

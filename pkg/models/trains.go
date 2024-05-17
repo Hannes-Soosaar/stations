@@ -43,6 +43,15 @@ func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
 		}
 	}
 }
+func (s *Trains) UpdateTrainOnRout(trainId int, routNumber int) {
+
+	for i, train := range s.Trains {
+		if train.Id == trainId {
+			s.Trains[i].TrainOnRout = routNumber
+			fmt.Printf("T %d %d \n", trainId, routNumber)
+		}
+	}
+}
 func (s *Trains) UpdateTrainNextLocation(trainId int, TrainAt string) {
 	fmt.Printf("T%d, %s \n", trainId, TrainAt)
 	for i, train := range s.Trains {
