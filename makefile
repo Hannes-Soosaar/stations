@@ -5,6 +5,6 @@ terminus:
 	@echo "Starting the terminus map"
 	@cd cmd && go run .  beginning-terminus.map beginning far 2
 jungle: 
-	@echo "Starting the terminus map"
-	@cd cmd && go run .  jungle-desert.map jungle treetop 2
+	@echo "Starting the jungle map"
+	@cd cmd && go run .  jungle-desert.map jungle treetop 4
 
