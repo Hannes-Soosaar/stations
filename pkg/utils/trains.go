@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"log"
-
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
@@ -17,7 +15,6 @@ func createTrains() {
 		}
 		trains.Trains = append(trains.Trains, train)
 	}
-	log.Println(trains.Trains)
 }
 
 func findCurrentStationName(trainId int) string {

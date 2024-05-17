@@ -240,13 +240,22 @@ func simulateTurnsHS() int {
 	return turnCount
 }
 func simulateTurnsHS2() {
-
+	// createTrains()
 	instance := models.GetInstance()
 	trains := models.GetTrains()
 	routs := models.GetRouts()
 	nextStation := ""
-
 	routeStationsMap := make(map[int]map[string]bool)
+	fmt.Printf("The station we start on is  %s ", instance.StartStation)
+	// Moved the create stations here
+	for i := 0; i < instance.NumberOfTrains; i++ {
+		train := models.Train{
+			Id:             i,
+			CurrentStation: instance.StartStation,
+		}
+		trains.Trains = append(trains.Trains, train)
+	}
+
 	// Holds the maps with boolean values
 	for i, rout := range routs.Routs {
 		stationMap := make(map[string]bool)
@@ -255,43 +264,37 @@ func simulateTurnsHS2() {
 		}
 		routeStationsMap[i] = stationMap
 	}
-	// fmt.Print("we have this many routs")
-	// fmt.Println(len(routs.Routs))+
+	// temp division for routs
 	for i, train := range trains.Trains {
 		j := i % len(routs.Routs)
-		fmt.Printf("Length of routs.Routs: %d\n", len(routs.Routs))
 		models.GetTrains().UpdateTrainOnRout(train.Id, j)
-		fmt.Printf("train T%d on Rout%d \n", train.Id, train.TrainOnRout)
+		fmt.Println(train.CurrentStation)
 	}
-
-	//
-
-	// Does the first move and switches the trains stations to occupied
+	// creates
 	for k := 0; k < len(routs.Routs); k++ {
+		// fmt.Println(routs.Routs[k])
 		nextStation = GetNextStationOnPath(instance.StartStation, k)
+		// fmt.Println(nextStation)
 		models.GetTrains().UpdateTrainLocation(trains.Trains[k].Id, nextStation)
 		if stationMap, exists := routeStationsMap[k]; exists {
 			if _, stationExists := stationMap[nextStation]; stationExists {
 				stationMap[nextStation] = false
 			}
 		}
-		// fmt.Println(trains.Trains[k].CurrentStation)
-		// fmt.Println(k)
 		waitForKeyPress()
 	}
-
-	for i := 0; i < len(trains.Trains); i++ {
-		fmt.Println(trains.Trains[i].CurrentStation)
-	}
+	// for i := 0; i < len(trains.Trains); i++ {
+	// 	fmt.Println(trains.Trains[i].CurrentStation)
+	// }
 
 	for len(trains.Trains) > 0 { // checks to see how many trains are waiting
 		if len(routeStationsMap) > 0 {
 			_ = 0 // shut-up holder
 		}
 
-		for _, train1 := range trains.Trains { // go through the
-
-			nextStation = GetNextStationOnPath(train1.CurrentStation, 0) // instead of 0 we will have the TrainOnRout
+		for i, train1 := range trains.Trains { // go through the
+			j := i % len(routs.Routs)
+			nextStation = GetNextStationOnPath(train1.CurrentStation, j) // instead of 0 we will have the TrainOnRout
 			models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 			// !WORKS
 			if train1.CurrentStation == instance.EndStation {
@@ -404,6 +407,6 @@ func displayPaths() {
 
 func waitForKeyPress() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Press Enter to continue...")
+	fmt.Print(" ...")
 	reader.ReadString('\n')
 }

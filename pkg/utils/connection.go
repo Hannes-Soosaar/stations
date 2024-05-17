@@ -54,5 +54,5 @@ func AddDistanceToConnection() {
 		allConnections.Connections[i].Distance = distBetweenStations
 	}
 	addConnectionToStations()
-	createTrains()
+	// createTrains()
 }
