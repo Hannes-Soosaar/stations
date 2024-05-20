@@ -36,6 +36,16 @@ func (s *Trains) RemoveTrainById(trainId int) {
 
 	//! Removing a train derails everything!
 }
+func (s *Trains) SetArrivedAtDestinationById(trainId int) {
+	for i, train := range s.Trains {
+		if train.Id == trainId {
+			s.Trains[i].IsAtDestination = true 
+			fmt.Printf("T %d Arrived at Destination \n", train.Id)
+		}
+	}
+
+	//! Removing a train derails everything!
+}
 
 func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
 	// fmt.Printf("T %d %s \n", trainId, TrainAt)
