@@ -225,13 +225,15 @@ func simulateTurnsHS2() {
 			if !train1.IsAtDestination { // check if its at the end
 				nextStation := GetNextStationOnPath(train1.CurrentStation, train1.TrainOnRout)
 				if stationMap, exists := routeStationsMap[train1.TrainOnRout]; exists {
-					if val, ok := stationMap[nextStation]; ok && !val { // !whats going on here!
+					if val, ok := stationMap[nextStation]; ok && !val { 
 						routeStationsMap[train1.TrainOnRout][nextStation] = true            //sets the next station to occupied
 						routeStationsMap[train1.TrainOnRout][train1.CurrentStation] = false // sets the current station as free
 						routeStationsMap[train1.TrainOnRout][instance.EndStation] = false   // if the last station
 						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false // if the last station
 						models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
+						if train1.CurrentStation != instance.StartStation{
 						result += "T "+strconv.Itoa(train1.Id)+" "+train1.CurrentStation+" "
+						}
 						if nextStation == instance.EndStation{
 							models.GetTrains().SetArrivedAtDestinationById(train1.Id)
 						}
