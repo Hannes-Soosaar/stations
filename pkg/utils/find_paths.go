@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"container/list"
 	"fmt"
-	"log"
 	"os"
+	"strconv"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
@@ -110,11 +110,11 @@ func FindAllUniquePaths() {
 	}
 
 	FindPathCombWithLeastTurns()
-	displayPaths()
+	// displayPaths()
 }
 
 func FindPathCombWithLeastTurns() {
-	allPossiblePaths := models.GetPaths() //! we have all possible unique paths.
+	allPossiblePaths := models.GetPaths()
 	numOfPaths := len(allPossiblePaths.Paths)
 	var pathsToSimulate []models.Path
 	var simulationResults []int
@@ -129,10 +129,10 @@ func FindPathCombWithLeastTurns() {
 		pathsToSimulate = append(pathsToSimulate, allPossiblePaths.Paths[i])
 		simulationResults = append(simulationResults, simulateTurns(pathsToSimulate))
 	}
-	fmt.Println("Simulation results: ")
-	comment := "Using the first %d path(s): %d turns will be made\n"
+	// fmt.Println("Simulation results: ")
+	// comment := "Using the first %d path(s): %d turns will be made\n"
 	for j := 0; j < count; j++ {
-		fmt.Printf(comment, j+1, simulationResults[j])
+		// fmt.Printf(comment, j+1, simulationResults[j])
 	}
 }
 
@@ -150,7 +150,7 @@ func simulateTurns(paths []models.Path) int {
 	// continue while the trains object has trains. finish when all trains have been moved
 
 	for tempCount > 0 { // checks to see how many trains are waiting
-		log.Println(tempCount)
+		// log.Println(tempCount)
 		for _, train := range trains.Trains { // go through the trains
 			if train.CurrentStation == instance.StartStation {
 				models.GetTrains().UpdateTrainLocation(train.Id, GetNextStationOnPath(train.CurrentStation, 0))
@@ -158,7 +158,7 @@ func simulateTurns(paths []models.Path) int {
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 			if train.CurrentStation == instance.EndStation {
-				fmt.Printf("Train At finish %s", train.CurrentStation)
+				// fmt.Printf("Train At finish %s", train.CurrentStation)
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 		}
@@ -185,18 +185,16 @@ func simulateTurns(paths []models.Path) int {
 }
 
 func simulateTurnsHS2() {
-	// createTrains()
 	instance := models.GetInstance()
 	trains := models.GetTrains()
 	routs := models.GetRouts()
 	allTrainsAtDestination := false
-	nextStation := ""
-	//? set to 1 as we will initialize the trains on the first stations before the loop
+	// nextStation := ""
+	result :=""
 	turns := 1
 	routeStationsMap := make(map[int]map[string]bool)
 
-	fmt.Printf("The station we start on is  %s  \n", instance.StartStation)
-	// Moved the create stations here
+// Creates trains	
 	for i := 0; i < instance.NumberOfTrains; i++ {
 		train := models.Train{
 			Id:             i,
@@ -205,96 +203,66 @@ func simulateTurnsHS2() {
 		trains.Trains = append(trains.Trains, train)
 	}
 
-	// Holds the maps with boolean values
+// Holds the maps with boolean values
 	for i, rout := range routs.Routs {
 		stationMap := make(map[string]bool)
 		for _, station := range rout.StationNames {
-			stationMap[station] = true
+			stationMap[station] = false
 		}
 		routeStationsMap[i] = stationMap
 	}
-
-	// The first turn, where the first trains are moved by one station The next function can be on either side
-	for k := 0; k < len(routs.Routs); k++ {
-		fmt.Println(routs.Routs[k])
-		nextStation = GetNextStationOnPath(instance.StartStation, k)
-		fmt.Println(nextStation)
-		models.GetTrains().UpdateTrainLocation(trains.Trains[k].Id, nextStation)
-
-		if stationMap, exists := routeStationsMap[k]; exists {
-			if _, stationExists := stationMap[nextStation]; stationExists {
-				stationMap[nextStation] = false
-			}
-		}
-
-		waitForKeyPress()
-	}
-	//
 
 	// temp division for routs
 	for i, train := range trains.Trains {
 		j := i % len(routs.Routs)
 		models.GetTrains().UpdateTrainOnRout(train.Id, j)
-		fmt.Println(train.CurrentStation)
 	}
 
-	// Print the stationStatus
-	fmt.Println(routeStationsMap)
 	for !allTrainsAtDestination { // checks to see how many trains are waiting
-
-		for i, train1 := range trains.Trains { // go through the
-
+		// fmt.Println(turns)
+		result =""
+		for _, train1 := range trains.Trains { // go through the
 			if !train1.IsAtDestination { // check if its at the end
-				fmt.Printf("TURN %d : ", i)
-				nextStation = GetNextStationOnPath(train1.CurrentStation, train1.TrainOnRout)
-//TODO: left off here 
+				nextStation := GetNextStationOnPath(train1.CurrentStation, train1.TrainOnRout)
 				if stationMap, exists := routeStationsMap[train1.TrainOnRout]; exists {
-					if val, ok := stationMap[nextStation]; ok && !val {
-						stationMap[nextStation] = false           //sets the next station to occupied
-						stationMap[train1.CurrentStation] = true  // sets the current station as free
-						stationMap[instance.EndStation] = false   // if the last station
-						stationMap[instance.StartStation] = false // if the last station
-						fmt.Println("---------  VALUES IN MAP CHANGED---")
-						fmt.Println(stationMap[train1.CurrentStation])
-						fmt.Println("---------  VALUES IN MAP CHANGED---")
-						fmt.Println(stationMap[nextStation])
-						fmt.Println("********************************")
+					if val, ok := stationMap[nextStation]; ok && !val { // !whats going on here!
+						routeStationsMap[train1.TrainOnRout][nextStation] = true            //sets the next station to occupied
+						routeStationsMap[train1.TrainOnRout][train1.CurrentStation] = false // sets the current station as free
+						routeStationsMap[train1.TrainOnRout][instance.EndStation] = false   // if the last station
+						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false // if the last station
+						models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
+						result += "T "+strconv.Itoa(train1.Id)+" "+train1.CurrentStation+" "
+						if nextStation == instance.EndStation{
+							models.GetTrains().SetArrivedAtDestinationById(train1.Id)
+						}
+					} else{
+						// fmt.Printf("Train %d Waiting at %s, next stations %s is occupied \n", train1.Id,train1.CurrentStation,nextStation)
 					}
 				}
-				models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
-
+			
 				// instead of 0 we will have the TrainOnRout
-
-				// !WORKS
-
-				if train1.CurrentStation == instance.EndStation {
-					// models.GetTrains().RemoveTrainById(train1.Id)
-					models.GetTrains().SetArrivedAtDestinationById(train1.Id)
-				}
-				fmt.Printf("T%d-%s #On rout-%d ", train1.Id, train1.CurrentStation, train1.TrainOnRout)
+				// if train1.CurrentStation == instance.EndStation {
+				// 	// models.GetTrains().RemoveTrainById(train1.Id)
+				// 	models.GetTrains().SetArrivedAtDestinationById(train1.Id)
+				// }
+				// fmt.Printf("T%d-%s #On rout-%d ", train1.Id, train1.CurrentStation, train1.TrainOnRout)
 			}
 		}
+		fmt.Println(result)
 		turns++
-		// waitForKeyPress()
-		fmt.Println(turns)
+		
 		allTrainsAtDestination = checkTrainStatus()
 	}
 }
 
 func checkTrainStatus() bool {
 	trains := models.GetTrains()
-	// only passes if non of the trains are not at the the destination
 	for _, train := range trains.Trains {
 		if !train.IsAtDestination {
 			return false
 		}
 	}
 	return true
-}
-
-func GetAllocateTrainsToRouts(trains *models.Trains, numberOfRouts int) {
-
-	return
 }
 
 // Here we need to pass in
@@ -306,10 +274,8 @@ func GetNextStationOnPath(currentStationName string, routNum int) string {
 		if stationName == currentStationName {
 			if i < len(rout.StationNames)-1 {
 				nextStationName = rout.StationNames[i+1]
-				fmt.Printf("Moving to Next Station- %s \n", nextStationName)
 			} else {
 				nextStationName = rout.StationNames[len(rout.StationNames)-1]
-				fmt.Printf("Moving to Last Station- %s \n", nextStationName)
 			}
 		}
 	}
@@ -358,18 +324,6 @@ func GetShortestPath(trainID int) string {
 	return trainToMoveTo
 }
 
-// func GetNextStation(trainID int) string {
-// 	train := findTrainById(trainID)                         //! possible pointe error
-// 	currentStation := findStationByName(train.LocationName) // finds where the train is now
-// 	// find where the train was
-// 	var trainToMoveTo string
-// 	// var distance float64
-// 	for _, stationConnections := range currentStation.ConnObj { // gets all connections from current station
-// 	}
-// 	if stationConnections.StationOne == currentStation.Name {
-// 	}
-// 	return trainToMoveTo
-// }
 
 func displayPaths() {
 	routs := models.GetRouts()
