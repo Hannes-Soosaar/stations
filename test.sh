@@ -19,7 +19,6 @@ echo "END OF TEST"
 echo 
 
 
-
 ## We can just run the progamm and the files under assets/test/input
 ## 
 
