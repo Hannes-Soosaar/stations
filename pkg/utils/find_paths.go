@@ -234,6 +234,10 @@ func simulateTurnsHS2() {
 							models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 							models.GetTrains().SetArrivedAtDestinationById(train1.Id)
 						}
+
+						//TODO if nextStation == instance.EndStation and currentStation == instance.StartStation {
+						//	need to make a case that accounts for paths where start and end is directly connected, otherwise all the trains will take 1 train to get to the end
+						//}
 					}
 				}
 			} else if train1.IsAtDestination && !train1.DestinationPrinted {
