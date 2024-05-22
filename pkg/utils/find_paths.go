@@ -158,7 +158,7 @@ func simulateTurns(paths []models.Path) int {
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 			if train.CurrentStation == instance.EndStation {
-				// fmt.Printf("Train At finish %s", train.CurrentStation)
+				fmt.Printf("Train At finish %s", train.CurrentStation)
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 		}
@@ -190,11 +190,11 @@ func simulateTurnsHS2() {
 	routs := models.GetRouts()
 	allTrainsAtDestination := false
 	// nextStation := ""
-	result :=""
+	result := ""
 	turns := 1
 	routeStationsMap := make(map[int]map[string]bool)
 
-// Creates trains	
+	// Creates trains
 	for i := 0; i < instance.NumberOfTrains; i++ {
 		train := models.Train{
 			Id:             i,
@@ -203,7 +203,7 @@ func simulateTurnsHS2() {
 		trains.Trains = append(trains.Trains, train)
 	}
 
-// Holds the maps with boolean values
+	// Holds the maps with boolean values
 	for i, rout := range routs.Routs {
 		stationMap := make(map[string]bool)
 		for _, station := range rout.StationNames {
@@ -212,49 +212,63 @@ func simulateTurnsHS2() {
 		routeStationsMap[i] = stationMap
 	}
 
-	// temp division for routs
-	for i, train := range trains.Trains {
-		j := i % len(routs.Routs)
-		models.GetTrains().UpdateTrainOnRout(train.Id, j)
-	}
+	// setup train routs!
+	designateRoutsToTrains(routs, trains)
 
 	for !allTrainsAtDestination { // checks to see how many trains are waiting
-		// fmt.Println(turns)
-		result =""
+		result = ""
 		for _, train1 := range trains.Trains { // go through the
 			if !train1.IsAtDestination { // check if its at the end
 				nextStation := GetNextStationOnPath(train1.CurrentStation, train1.TrainOnRout)
 				if stationMap, exists := routeStationsMap[train1.TrainOnRout]; exists {
-					if val, ok := stationMap[nextStation]; ok && !val { 
+					if val, ok := stationMap[nextStation]; ok && !val {
 						routeStationsMap[train1.TrainOnRout][nextStation] = true            //sets the next station to occupied
 						routeStationsMap[train1.TrainOnRout][train1.CurrentStation] = false // sets the current station as free
 						routeStationsMap[train1.TrainOnRout][instance.EndStation] = false   // if the last station
 						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false // if the last station
 						models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
-						if train1.CurrentStation != instance.StartStation{
-						result += "T "+strconv.Itoa(train1.Id)+" "+train1.CurrentStation+" "
+						if train1.CurrentStation != instance.StartStation {
+							result += "T " + strconv.Itoa(train1.Id) + " " + train1.CurrentStation + " "
 						}
-						if nextStation == instance.EndStation{
+						if nextStation == instance.EndStation {
 							models.GetTrains().SetArrivedAtDestinationById(train1.Id)
 						}
-					} else{
-						// fmt.Printf("Train %d Waiting at %s, next stations %s is occupied \n", train1.Id,train1.CurrentStation,nextStation)
 					}
 				}
-			
-				// instead of 0 we will have the TrainOnRout
-				// if train1.CurrentStation == instance.EndStation {
-				// 	// models.GetTrains().RemoveTrainById(train1.Id)
-				// 	models.GetTrains().SetArrivedAtDestinationById(train1.Id)
-				// }
-				// fmt.Printf("T%d-%s #On rout-%d ", train1.Id, train1.CurrentStation, train1.TrainOnRout)
 			}
 		}
 		fmt.Println(result)
 		turns++
-		
+
 		allTrainsAtDestination = checkTrainStatus()
 	}
+}
+
+func designateRoutsToTrains(r *models.Routs, t *models.Trains) {
+	// ? Tried something new here with the naming.
+	// _:= t.Trains
+	longestRout:= 0
+
+	for _, routs := range r.Routs{
+		stationsOnRout := routs.StationNames
+		if len(stationsOnRout) > longestRout{
+			longestRout= len(stationsOnRout)
+		}
+	}
+
+// fmt.Printf("The longest rout is : %d \n ", longestRout)
+
+
+
+	// need to find how many trains we have
+	// need to find the longest rout.
+	// need to return how many routs there should be. 
+
+	for i, train := range t.Trains {
+		j := i % len(r.Routs)
+		models.GetTrains().UpdateTrainOnRout(train.Id, j)
+	}
+
 }
 
 func checkTrainStatus() bool {
@@ -325,7 +339,6 @@ func GetShortestPath(trainID int) string {
 	}
 	return trainToMoveTo
 }
-
 
 func displayPaths() {
 	routs := models.GetRouts()

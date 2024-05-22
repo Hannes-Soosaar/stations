@@ -9,7 +9,7 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-// ? Reads in the Map
+
 func mapConnections(cs []string) {
 	var connection models.Connection
 	//This creates the empty connections structure at the pointer
@@ -33,10 +33,10 @@ func getConnections() {
 		stationTwo := findStationByName(connection.StationTwo)
 		if stationOne.Name == connection.StationOne {
 			stationOne.Connections = append(stationOne.Connections, findStationByName(connection.StationTwo))
-			stationOne.ConnObj = append(stationOne.ConnObj, connection) //! testing the direct Connection slice
+			stationOne.ConnObj = append(stationOne.ConnObj, connection) 
 			stationTwo.Connections = append(stationTwo.Connections, findStationByName(connection.StationOne))
-			stationTwo.ConnObj = append(stationTwo.ConnObj, connection) //! testing the direct connection slice
-			models.GetStationsMap().UpdateStation(stationOne)           //! We needed to update the stationMap struct
+			stationTwo.ConnObj = append(stationTwo.ConnObj, connection)
+			models.GetStationsMap().UpdateStation(stationOne) 
 			models.GetStationsMap().UpdateStation(stationTwo)
 		}
 	}
