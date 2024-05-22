@@ -25,12 +25,11 @@ func (s *Trains) AddTrainStation(trainId int, TrainAt Station) {
 	tempTrain.CurrentStation = TrainAt.Name
 	s.Trains = append(s.Trains, tempTrain)
 }
-//!not used!
+
 func (s *Trains) RemoveTrainById(trainId int) {
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains = append(s.Trains[:i], s.Trains[i+1:]...)
-			// fmt.Printf("T %d Removed", train.Id)
 		}
 	}
 
@@ -39,13 +38,18 @@ func (s *Trains) SetArrivedAtDestinationById(trainId int) {
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains[i].IsAtDestination = true 
-			// fmt.Printf("T %d Arrived at Destination \n", train.Id)
+		}
+	}
+}
+func (s *Trains) SetDestinationPrintedById(trainId int) {
+	for i, train := range s.Trains {
+		if train.Id == trainId {
+			s.Trains[i].DestinationPrinted = true 
 		}
 	}
 }
 
 func (s *Trains) UpdateTrainLocation(trainId int, TrainAt string) {
-	// fmt.Printf("T %d %s \n", trainId, TrainAt)
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains[i].CurrentStation = TrainAt
@@ -56,12 +60,10 @@ func (s *Trains) UpdateTrainOnRout(trainId int, routNumber int) {
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains[i].TrainOnRout = routNumber
-			//  fmt.Printf("T %d %d \n", trainId, routNumber)
 		}
 	}
 }
 func (s *Trains) UpdateTrainNextLocation(trainId int, TrainAt string) {
-	// fmt.Printf("T%d, %s \n", trainId, TrainAt)
 	for i, train := range s.Trains {
 		if train.Id == trainId {
 			s.Trains[i].NextStation = TrainAt

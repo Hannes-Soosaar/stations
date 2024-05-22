@@ -158,7 +158,7 @@ func simulateTurns(paths []models.Path) int {
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 			if train.CurrentStation == instance.EndStation {
-				fmt.Printf("Train At finish %s", train.CurrentStation)
+				// fmt.Printf("Train At finish %s", train.CurrentStation)
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 		}
@@ -228,18 +228,21 @@ func simulateTurnsHS2() {
 						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false // if the last station
 						models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 						if train1.CurrentStation != instance.StartStation {
-							result += "T " + strconv.Itoa(train1.Id) + " " + train1.CurrentStation + " "
+							result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " // plus one to get the trains to start form 1
 						}
 						if nextStation == instance.EndStation {
+							models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 							models.GetTrains().SetArrivedAtDestinationById(train1.Id)
 						}
 					}
 				}
+			} else if train1.IsAtDestination && !train1.DestinationPrinted {
+				result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " // plus one to get the trains to start form 1
+				models.GetTrains().SetDestinationPrintedById(train1.Id)
 			}
 		}
 		fmt.Println(result)
 		turns++
-
 		allTrainsAtDestination = checkTrainStatus()
 	}
 }
@@ -247,22 +250,14 @@ func simulateTurnsHS2() {
 func designateRoutsToTrains(r *models.Routs, t *models.Trains) {
 	// ? Tried something new here with the naming.
 	// _:= t.Trains
-	longestRout:= 0
+	longestRout := 0
 
-	for _, routs := range r.Routs{
+	for _, routs := range r.Routs {
 		stationsOnRout := routs.StationNames
-		if len(stationsOnRout) > longestRout{
-			longestRout= len(stationsOnRout)
+		if len(stationsOnRout) > longestRout {
+			longestRout = len(stationsOnRout)
 		}
 	}
-
-// fmt.Printf("The longest rout is : %d \n ", longestRout)
-
-
-
-	// need to find how many trains we have
-	// need to find the longest rout.
-	// need to return how many routs there should be. 
 
 	for i, train := range t.Trains {
 		j := i % len(r.Routs)
@@ -272,9 +267,10 @@ func designateRoutsToTrains(r *models.Routs, t *models.Trains) {
 }
 
 func checkTrainStatus() bool {
+	// The destination can be printed only when the train has arrived tha the destination
 	trains := models.GetTrains()
 	for _, train := range trains.Trains {
-		if !train.IsAtDestination {
+		if !train.DestinationPrinted {
 			return false
 		}
 	}

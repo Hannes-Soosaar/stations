@@ -1,12 +1,26 @@
 
-# Test the two-four.map
-cd cmd && go run .  two-four.map two four 5
+# Test london.map
+cd cmd
+echo
+echo START TEST
+echo
+go run .  london-network.map waterloo st_pancras 4 | tee myfile.txt
+echo 
+echo END TEST
+cd ..
+cd assets/tests/expected
+echo 
+echo "EXPECTED RESULT"
+echo 
+cat correct_format.txt
+echo 
+echo
+echo "END OF TEST"
+echo 
 
-output=$(response)
-echo "The output is: $output"
 
-if [[ "$output" == *"expected_string"* ]]; then
-    echo "The output contains the expected string."
-else
-    echo "The output does not contain the expected string."
-fi
+
+## We can just run the progamm and the files under assets/test/input
+## 
+
+
