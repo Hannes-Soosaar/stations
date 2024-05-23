@@ -11,6 +11,10 @@ num:
 	@echo "Starting the jungle map"
 	@cd cmd && go run .  two-four.map two four 5
 
+terminus:
+	@echo "Starting the terminus map"
+	@cd cmd && go run .  beginning-terminus.map beginning terminus 5
+
 test:
 	@echo "Start tests"
 	@./test.sh
