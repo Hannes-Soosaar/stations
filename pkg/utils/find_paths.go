@@ -244,10 +244,6 @@ func simulateTurnsHS2(trainsPerPath []int) {
 							models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 							models.GetTrains().SetArrivedAtDestinationById(train1.Id)
 						}
-
-						//TODO if nextStation == instance.EndStation and currentStation == instance.StartStation {
-						//	need to make a case that accounts for paths where start and end is directly connected, otherwise all the trains will take 1 train to get to the end
-						//}
 					}
 				}
 			} else if train1.IsAtDestination && !train1.DestinationPrinted {
@@ -263,8 +259,7 @@ func simulateTurnsHS2(trainsPerPath []int) {
 }
 
 func designateRoutsToTrains(trainsPerPath []int) {
-	var trainIndex int = 1
-
+	var trainIndex int = 0
 	for !allZero(trainsPerPath) {
 		for i, trainAmountForPath := range trainsPerPath {
 			if trainAmountForPath <= 0 {
@@ -274,7 +269,6 @@ func designateRoutsToTrains(trainsPerPath []int) {
 				models.GetTrains().UpdateTrainOnRout(trainIndex, i)
 				trainIndex++
 			}
-
 		}
 	}
 }

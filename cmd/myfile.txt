@@ -8,6 +8,9 @@ waterloo
 euston
 st_pancras
 ----------------------------
+2
+2
+----------------------------
 
 T1-victoria T2-euston 
 T1-st_pancras T2-st_pancras T3-victoria T4-euston 

@@ -9,7 +9,6 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-// ? Reads in the Map
 func mapConnections(cs []string) {
 	var connection models.Connection
 	//This creates the empty connections structure at the pointer
@@ -54,5 +53,4 @@ func AddDistanceToConnection() {
 		allConnections.Connections[i].Distance = distBetweenStations
 	}
 	addConnectionToStations()
-	// createTrains()
 }
