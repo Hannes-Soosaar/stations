@@ -116,19 +116,19 @@ func FindAllUniquePaths() {
 func FindPathCombWithLeastTurns() {
 	allPossiblePaths := models.GetPaths()
 	numOfPaths := len(allPossiblePaths.Paths)
-	var pathsToSimulate []models.Path
-	var simulationResults []int
+	// var pathsToSimulate []models.Path
+	// var simulationResults []int
 	count := numOfPaths
-	simulateTurns(allPossiblePaths.Paths)
-	simulateTurnsHS2()
+	_, trainsPerPath := simulateTurns(allPossiblePaths.Paths)
+	simulateTurnsHS2(trainsPerPath)
 
 	if numOfPaths == 0 {
 		fmt.Println("Error: there are no valid paths!")
 	}
-	for i := 0; i < numOfPaths; i++ {
-		pathsToSimulate = append(pathsToSimulate, allPossiblePaths.Paths[i])
-		simulationResults = append(simulationResults, simulateTurns(pathsToSimulate))
-	}
+	// for i := 0; i < numOfPaths; i++ {
+	// 	pathsToSimulate = append(pathsToSimulate, allPossiblePaths.Paths[i])
+	// 	simulationResults = append(simulationResults, simulateTurns(pathsToSimulate))
+	// }
 	// fmt.Println("Simulation results: ")
 	// comment := "Using the first %d path(s): %d turns will be made\n"
 	for j := 0; j < count; j++ {
@@ -136,7 +136,7 @@ func FindPathCombWithLeastTurns() {
 	}
 }
 
-func simulateTurns(paths []models.Path) int {
+func simulateTurns(paths []models.Path) (int, []int) {
 	instance := models.GetInstance()
 	trainAmount := instance.NumberOfTrains
 	_ = instance.EndStation
@@ -167,6 +167,8 @@ func simulateTurns(paths []models.Path) int {
 
 	var minTurnCounts []int
 	var turnCount int = 0
+	var trainsOnPath = make([]int, numOfPaths)
+	var trainsOnCurrentPath int
 
 	for i := 0; i < numOfPaths; i++ {
 		minTurnCount := len(paths[i].PathStations) - 1
@@ -178,13 +180,21 @@ func simulateTurns(paths []models.Path) int {
 		for i := 0; i < numOfPaths; i++ {
 			if turnCount >= minTurnCounts[i] {
 				trainAmount--
+				trainsOnCurrentPath = trainsOnPath[i] + 1
+				trainsOnPath[i] = trainsOnCurrentPath
 			}
+
 		}
 	}
-	return turnCount
+
+	for _, trainOnPath := range trainsOnPath {
+		fmt.Println(trainOnPath)
+	}
+	fmt.Println("----------------------------")
+	return turnCount, trainsOnPath
 }
 
-func simulateTurnsHS2() {
+func simulateTurnsHS2(trainsPerPath []int) {
 	instance := models.GetInstance()
 	trains := models.GetTrains()
 	routs := models.GetRouts()
@@ -213,7 +223,7 @@ func simulateTurnsHS2() {
 	}
 
 	// setup train routs!
-	designateRoutsToTrains(routs, trains)
+	designateRoutsToTrains(trainsPerPath)
 
 	for !allTrainsAtDestination { // checks to see how many trains are waiting
 		result = ""
@@ -252,23 +262,30 @@ func simulateTurnsHS2() {
 	}
 }
 
-func designateRoutsToTrains(r *models.Routs, t *models.Trains) {
-	// ? Tried something new here with the naming.
-	// _:= t.Trains
-	longestRout := 0
+func designateRoutsToTrains(trainsPerPath []int) {
+	var trainIndex int = 1
 
-	for _, routs := range r.Routs {
-		stationsOnRout := routs.StationNames
-		if len(stationsOnRout) > longestRout {
-			longestRout = len(stationsOnRout)
+	for !allZero(trainsPerPath) {
+		for i, trainAmountForPath := range trainsPerPath {
+			if trainAmountForPath <= 0 {
+				continue
+			} else {
+				trainsPerPath[i]--
+				models.GetTrains().UpdateTrainOnRout(trainIndex, i)
+				trainIndex++
+			}
+
 		}
 	}
+}
 
-	for i, train := range t.Trains {
-		j := i % len(r.Routs)
-		models.GetTrains().UpdateTrainOnRout(train.Id, j)
+func allZero(indexes []int) bool {
+	for _, val := range indexes {
+		if val != 0 {
+			return false
+		}
 	}
-
+	return true
 }
 
 func checkTrainStatus() bool {
