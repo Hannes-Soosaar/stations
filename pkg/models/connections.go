@@ -12,7 +12,7 @@ type Connections struct {
 
 var connectionsInstance *Connections
 var connectionsOnce sync.Once
-
+//TODO: needs to give out an error if the connections is called but it remains empty!
 func GetConnectionsP() *Connections {
 	connectionsOnce.Do(func() {
 		connectionsInstance = &Connections{}
@@ -29,5 +29,3 @@ func (s *Connections) UpdateConnections(c Connection) error {
 	}
 	return fmt.Errorf("station with station name  %s not found", c.StationOne)
 }
-
-// TODO add method to update the connections ?

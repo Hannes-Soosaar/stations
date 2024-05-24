@@ -2,12 +2,9 @@ package models
 
 import "sync"
 
-// This struct is not a singleton and can be created and destroyed at will
 type Rout struct {
 	StationNames []string
 }
-
-// Singleton that holds all possible routs.
 type Routs struct {
 	Routs []Rout
 }

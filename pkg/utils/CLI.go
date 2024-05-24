@@ -10,6 +10,8 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
+// TODO this code should be refactored 
+
 func GetAndCheckInput() (string, string, string, int, error) {
 
 	var errorMessage string
@@ -27,13 +29,13 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	startStation := os.Args[2]
 	endStation := os.Args[3]
 	trainAmountStr := os.Args[4]
-	dir := "../assets/input/" // will be messed up if somebody wants to add the full path. eg. c:/myMap
+
 
 	startStationFound := false
 	endStationFound := false
 
 	//TODO move to file_utils
-	mapFile, err := os.Open(dir + networkMap)
+	mapFile, err := os.Open(networkMap)
 	if err != nil {
 		return "", "", "", 0, fmt.Errorf("error opening network map file: %v", err)
 	}

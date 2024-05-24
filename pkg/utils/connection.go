@@ -1,6 +1,6 @@
 package utils
 
-// the file is named wrong. It gets connections not connection
+//TODO: Rename  file as it  is named wrong. It gets connections not connection
 import (
 	"fmt"
 	"math"
@@ -11,7 +11,6 @@ import (
 
 func mapConnections(cs []string) {
 	var connection models.Connection
-	//This creates the empty connections structure at the pointer
 	connections := models.GetConnectionsP()
 	for _, c := range cs {
 		split := strings.Split(c, "-")
@@ -40,9 +39,10 @@ func getConnections() {
 		}
 	}
 }
-
+// This function is not used currently for anything practical but might be useful if there is further development done with the programm.
 func AddDistanceToConnection() {
 	allConnections := models.GetConnectionsP()
+	fmt.Printf("error: %v\n", error)
 	deltaCordSqr := make([]float64, 2)
 	for i, connection := range allConnections.Connections {
 		stationOneCord := getStationCord(connection.StationOne)

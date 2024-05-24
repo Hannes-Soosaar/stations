@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"os"
 	"unicode"
-	// "gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
 func openMapFromFile(path string) {
-	// fmt.Println("OPENING FROM INSTANCE " + path)
 	var connections []string
-	mapFile, err := os.Open("../assets/input/" + path) // move the input directory to config
+	mapFile, err := os.Open(path) // move the input directory to config
 	if err != nil {
 		fmt.Errorf("error opening network map file: %v", err) // move error text to internal error_codes
 	}

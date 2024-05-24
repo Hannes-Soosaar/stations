@@ -30,7 +30,6 @@ func (s *StationsMap) UpdateStation(stationToUpdate Station) error {
 	return fmt.Errorf("station with name %s not found", stationToUpdate.Name)
 }
 
-// ! It is important to use the exact iteration number, if you do not, it will update a copy not the reference!
 func (s *StationsMap) UpdateStationConnection(connectionToUpdate Connection) error {
 	for i, station := range s.StationsMap {
 		for j, connection := range station.ConnObj {

@@ -1,17 +1,15 @@
 Path:
-waterloo
-victoria
-st_pancras
+bond_square
+apple_avenue
+orange_junction
+space_port
 ----------------------------
-Path:
-waterloo
-euston
-st_pancras
-----------------------------
-2
-2
+4
 ----------------------------
 
-T1-victoria T2-euston 
-T1-st_pancras T2-st_pancras T3-victoria T4-euston 
-T3-st_pancras T4-st_pancras 
+T1-apple_avenue 
+T1-orange_junction T2-apple_avenue 
+T1-space_port T2-orange_junction T3-apple_avenue 
+T2-space_port T3-orange_junction T4-apple_avenue 
+T3-space_port T4-orange_junction 
+T4-space_port 
