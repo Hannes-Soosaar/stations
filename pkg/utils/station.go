@@ -29,15 +29,14 @@ func addStationsToMap(line string) {
 	newStation.X = float64(x)
 	newStation.Y = float64(y)
 
-	if x < 0 || y < 0{
-		err := fmt.Errorf("error: Station: %s coordinates (X: %d ,Y: %d) are not valid. Coordinates must be positive integers or 0 ", newStation.Name,x,y)
+	if x < 0 || y < 0 {
+		err := fmt.Errorf("error: Station: %s coordinates (X: %d ,Y: %d) are not valid. Coordinates must be positive integers or 0 ", newStation.Name, x, y)
 		fmt.Println(err)
 		os.Exit(1)
 
 	}
 
 	stations.StationsMap = append(stations.StationsMap, newStation)
-
 
 }
 
@@ -64,3 +63,17 @@ func getStationCord(stationName string) []float64 {
 	return stationCoordinates
 }
 
+func checkForDuplicateCoordinates() {
+	stations:=models.GetStationsMap()
+	for i, station1 := range stations.StationsMap {
+		for j, station2 := range stations.StationsMap {
+			if i != j {
+				if station1.X == station2.X && station1.Y == station2.Y {
+					err := fmt.Errorf("error: %s station and %s station are on the same coordinates (X:%.0f,Y:%.0f)",station1.Name,station2.Name,station1.X,station1.Y )
+					fmt.Println(err)
+					os.Exit(1)
+				}
+			}
+		}
+	}
+}

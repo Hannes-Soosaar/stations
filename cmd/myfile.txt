@@ -1,16 +1,1 @@
-Path:
-waterloo
-victoria
-st_pancras
-----------------------------
-Path:
-waterloo
-euston
-st_pancras
-----------------------------
-1
-1
-----------------------------
-
-T1-victoria 
-T1-st_pancras 
+Error: The START: waterloo and END: waterloo stations cannot be the same. 

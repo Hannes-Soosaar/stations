@@ -29,7 +29,7 @@ test7 - err4    -displays "Error" on stderr when station names are invalid.     
 test8 - err5    -displays "Error" on stderr when the map does not contain a "stations:" section.                     #FAILED
 test9 - err6    -displays "Error" on stderr when a map contains more than 10000 stations.                            #FAILED
 test24- err7   -displays "Error" on stderr when any of the coordinates are not valid positive integers.              #PASS
-test25- err8   -displays "Error" on stderr when two stations exist at the same coordinates.                          #FAILED
+test25- err8   -displays "Error" on stderr when two stations exist at the same coordinates.                          #PASS
 test26- err9   -displays "Error" on stderr when the map does not contain a "connections:" section.                   #PASS
 test29- err10   -displays "Error" on stderr when duplicate routes exist between two stations, including in reverse.  #PASS
 
@@ -40,4 +40,4 @@ test18 -displays "Error" on stderr when too few command line arguments are used 
 test19 -It displays "Error" on stderr when too many command line arguments are used.            #PASS
 test21 -displays "Error" on stderr when the start station does not exist.                       #PASS need to add details!
 test22 -displays "Error" on stderr when the end station does not exist.                         #PASS need to add details!
-test23 -displays "Error" on stderr when the start and end station are the same.                 #PASS need to add details!
+test23 -displays "Error" on stderr when the start and end station are the same.                 #PASS

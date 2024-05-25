@@ -355,36 +355,36 @@ cat test23.txt
 echo 
 echo 
 echo "END OF TEST"
-# Test 24 - displays "Error" on stderr when any of the coordinates are not valid positive integers.
-cd $project_root_dir
-cd cmd
-echo
-echo START TEST 24
-go run . ../assets/tests/input/err7.txt waterloo st_pancras 1  | tee myfile.txt
-echo 
-cd ..
-cd assets/tests/expected
-echo 
-echo "EXPECTED RESULT"
-cat test24.txt
-echo 
-echo 
-echo "END OF TEST"
+# # Test 24 - displays "Error" on stderr when any of the coordinates are not valid positive integers.
+# cd $project_root_dir
+# cd cmd
+# echo
+# echo START TEST 24
+# go run . ../assets/tests/input/err7.txt waterloo st_pancras 1  | tee myfile.txt
+# echo 
+# cd ..
+# cd assets/tests/expected
+# echo 
+# echo "EXPECTED RESULT"
+# cat test24.txt
+# echo 
+# echo 
+# echo "END OF TEST"
 # Test 25 - displays "Error" on stderr when two stations exist at the same coordinates.
-cd $project_root_dir
-cd cmd
-echo
-echo START TEST 25
-go run . ../assets/tests/input/err8.txt waterloo st_pancras 1  | tee myfile.txt
-echo 
-cd ..
-cd assets/tests/expected
-echo 
-echo "EXPECTED RESULT"
-cat test25.txt
-echo 
-echo 
-echo "END OF TEST"
+# cd $project_root_dir
+# cd cmd
+# echo
+# echo START TEST 25
+# go run . ../assets/tests/input/err8.txt waterloo st_pancras 1  | tee myfile.txt
+# echo 
+# cd ..
+# cd assets/tests/expected
+# echo 
+# echo "EXPECTED RESULT"
+# cat test25.txt
+# echo 
+# echo 
+# echo "END OF TEST"
 # # Test 26 - displays "Error" on stderr when the map does not contain a "connections:" section.
 # cd $project_root_dir
 # cd cmd

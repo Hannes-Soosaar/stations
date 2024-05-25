@@ -64,7 +64,7 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	}
 	// input CLI
 	if startStation == endStation {
-		errorMessage += "The start and end stations cannot be the same. "
+		errorMessage += "The START: "+ startStation+" and END: "+endStation+" stations cannot be the same. "
 	}
 	// input CLI
 	trainAmount, err := strconv.Atoi(trainAmountStr)

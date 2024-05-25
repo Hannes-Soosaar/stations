@@ -68,7 +68,8 @@ func openMapFromFile(path string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
+	
 	mapConnections(connections)
 	getConnections()
+	checkForDuplicateCoordinates()
 }
