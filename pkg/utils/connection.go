@@ -31,13 +31,12 @@ func mapConnections(cs []string) {
 	for i, connection1 := range connections.Connections {
 		for j, connection2 := range connections.Connections {
 			if i != j {
-
-				if connection1.StationOne == connection2.StationOne && connection1.StationTwo == connection2.StationTwo {		
-					err:=fmt.Errorf("error: Duplicate routs exists between %s and %s", connection1.StationOne, connection1.StationTwo)
+				if connection1.StationOne == connection2.StationOne && connection1.StationTwo == connection2.StationTwo {
+					err := fmt.Errorf("error: Duplicate routs exists between %s and %s", connection1.StationOne, connection1.StationTwo)
 					fmt.Println(err)
 					os.Exit(1)
 				} else if connection1.StationOne == connection2.StationTwo && connection1.StationTwo == connection2.StationOne {
-					err:=fmt.Errorf("error: Duplicate reversed routes exist between between %s and %s", connection1.StationOne, connection1.StationTwo)
+					err := fmt.Errorf("error: Duplicate reversed routes exist between between %s and %s", connection1.StationOne, connection1.StationTwo)
 					fmt.Println(err)
 					os.Exit(1)
 				}
@@ -49,43 +48,56 @@ func mapConnections(cs []string) {
 func getConnections() {
 
 	allConnections, err := models.GetConnectionsP()
-	stations :=models.GetStationsMap()
-	var connectionHasStation bool
 
-	for _, connection :=range allConnections.Connections{
-		connectionHasStation = false
-		for _, station :=range stations.StationsMap{
-			if connection.StationOne == station.Name || connection.StationTwo == station.Name{
-				connectionHasStation = true 
-		}
+	// for _, connection :=range allConnections.Connections{
+	// 	connectionHasStation = false
+	// 	for _, station :=range stations.StationsMap{
+	// 		if connection.StationOne == station.Name || connection.StationTwo == station.Name{
+	// 			connectionHasStation = true
+	// 	}
 
-		if !connectionHasStation{
-					err := fmt.Errorf("error: in the %v connection connects to a station that does not exist ", connection)
-					fmt.Println(err)
-					os.Exit(1)
-		}
+	// 	if !connectionHasStation{
+	// 				err := fmt.Errorf("error: in the %v connection connects to a station that does not exist ", connection)
+	// 				fmt.Println(err)
+	// 				os.Exit(1)
+	// 	}
 
-	}
+	// }
 
 	if err != nil {
 		fmt.Println(err)
 	}
 	for _, connection := range allConnections.Connections {
-		stationOne := findStationByName(connection.StationOne)
-		stationTwo := findStationByName(connection.StationTwo)
+		stationOne := FindStationByName(connection.StationOne)
+		stationTwo := FindStationByName(connection.StationTwo)
 		if stationOne.Name == connection.StationOne {
-			stationOne.Connections = append(stationOne.Connections, findStationByName(connection.StationTwo))
+			stationOne.Connections = append(stationOne.Connections, FindStationByName(connection.StationTwo))
 			stationOne.ConnObj = append(stationOne.ConnObj, connection)
-			stationTwo.Connections = append(stationTwo.Connections, findStationByName(connection.StationOne))
+			stationTwo.Connections = append(stationTwo.Connections, FindStationByName(connection.StationOne))
 			stationTwo.ConnObj = append(stationTwo.ConnObj, connection)
 			models.GetStationsMap().UpdateStation(stationOne)
 			models.GetStationsMap().UpdateStation(stationTwo)
-		}else{
-			
+		} else {
+
 		}
 	}
 }
+
+func StationInConnectionIsAStation(){
+	connections, _ := models.GetConnectionsP() 
+for _,connection := range connections.Connections{
+		if !StationExistByName(connection.StationOne){
+			err := fmt.Errorf("error: a connection is made with %s station which does not exist.",connection.StationOne)
+			fmt.Println(err)
+			os.Exit(1)
+		}else if  !StationExistByName(connection.StationTwo){
+			err := fmt.Errorf("error: a connection is made with %s station which does not exist.",connection.StationTwo)
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	}
 }
+
 // func AddDistanceToConnection() {
 // 	allConnections, err := models.GetConnectionsP()
 // 	if err != nil {

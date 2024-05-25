@@ -34,7 +34,7 @@ func addStationsToMap(line string) {
 	stations.StationsMap = append(stations.StationsMap, newStation)
 }
 
-func findStationByName(name string) models.Station {
+func FindStationByName(name string) models.Station {
 	stations := models.GetStationsMap()
 	var matchingStation models.Station
 	for _, station := range stations.StationsMap {
@@ -43,6 +43,15 @@ func findStationByName(name string) models.Station {
 		}
 	}
 	return matchingStation
+}
+func StationExistByName(name string) bool {
+	stations := models.GetStationsMap()
+	for _, station := range stations.StationsMap {
+		if station.Name == name {
+			return true
+		}
+	}
+	return false
 }
 
 func getStationCord(stationName string) []float64 {

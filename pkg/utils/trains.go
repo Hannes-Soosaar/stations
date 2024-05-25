@@ -26,7 +26,7 @@ func findCurrentStationName(trainId int) string {
 	}
 	return currentStation
 }
-//TODO: remove unused.
+
 func findTrainById(trainId int) models.Train {
 	trains := models.GetTrains()
 	var currentTrain models.Train
@@ -37,7 +37,7 @@ func findTrainById(trainId int) models.Train {
 	}
 	return currentTrain
 }
-//TODO: remove unused.
+
 func findLastStationName(trainId int) string {
 	trains := models.GetTrains()
 	lastStation := ""

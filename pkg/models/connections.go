@@ -29,6 +29,7 @@ func GetConnectionsP() (*Connections,error) {
 	return connectionsInstance, err
 }
 
+//? This function is not used
 func (s *Connections) UpdateConnections(c Connection) error {
 	fmt.Println(s.Connections)
 	for i, connection := range s.Connections {

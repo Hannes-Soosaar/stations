@@ -15,9 +15,6 @@ func AddConnectionToStations() {
 		fmt.Errorf("There are no connections")
 	}
 	stations := models.GetStationsMap()
-
-
-	//TODO: Stations and connections are added here 
 	for _, connection := range connections.Connections {
 		for _, station := range stations.StationsMap {
 			if station.Name == connection.StationOne {

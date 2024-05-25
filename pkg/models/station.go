@@ -16,7 +16,6 @@ type Station struct {
 func (s *Station) RemoveConnection(name string) {
 	for i, conn := range s.Connections {
 		if conn.Name == name {
-			// Remove the connection at index i
 			s.Connections = append(s.Connections[:i], s.Connections[i+1:]...)
 			return
 		}

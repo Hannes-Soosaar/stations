@@ -1,1 +1,1 @@
-error: in the {st_pancras euston 0} connection connects to a station that does not exist 
+error: no path exists between the start (waterloo) and end (hannes) stations.

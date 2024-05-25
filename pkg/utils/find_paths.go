@@ -3,6 +3,7 @@ package utils
 import (
 	"container/list"
 	"fmt"
+	"os"
 	"strconv"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
@@ -15,11 +16,11 @@ type QueueNode struct {
 
 func FindPathWithBFS() ([]string, bool) {
 	instance := models.GetInstance()
-	start := findStationByName(instance.StartStation)
+	start := FindStationByName(instance.StartStation)
 	start.IsVisited = true
 	start.IsStart = true
 	models.StationsInstance.UpdateStation(start)
-	end := findStationByName(instance.EndStation)
+	end := FindStationByName(instance.EndStation)
 	end.IsFinish = true
 	models.StationsInstance.UpdateStation(end)
 	queue := list.New()
@@ -46,12 +47,13 @@ func FindPathWithBFS() ([]string, bool) {
 			rout := models.Rout{
 				StationNames: path,
 			}
+
 			models.GetRouts().AddRoutToRouts(rout)
 			return path, true
 		}
 
-		for _, connectedStation := range findStationByName(current.Name).Connections {
-			neighbor := findStationByName(connectedStation.Name)
+		for _, connectedStation := range FindStationByName(current.Name).Connections {
+			neighbor := FindStationByName(connectedStation.Name)
 			if !connectedStation.IsVisited {
 				neighbor.IsVisited = false
 			} else if connectedStation.IsVisited {
@@ -70,6 +72,7 @@ func FindPathWithBFS() ([]string, bool) {
 			}
 		}
 	}
+
 	return nil, false
 }
 
@@ -80,14 +83,14 @@ func FindAllUniquePaths() {
 		pathNames, newUniquePathFound = FindPathWithBFS()
 		if pathNames != nil {
 			for i := 0; i < len(pathNames)-1; i++ {
-				station := findStationByName(pathNames[i])
-				nextStation := findStationByName(pathNames[i+1])
+				station := FindStationByName(pathNames[i])
+				nextStation := FindStationByName(pathNames[i+1])
 				station.RemoveConnection(nextStation.Name) // ? why are we removing the Connection ?
 				models.StationsInstance.UpdateStation(station)
 			}
 			var path []models.Station
 			for _, stationName := range pathNames {
-				station := findStationByName(stationName)
+				station := FindStationByName(stationName)
 				path = append(path, station)
 			}
 			pathStruct := models.Path{PathStations: path}
@@ -95,23 +98,23 @@ func FindAllUniquePaths() {
 			pathsInstance.AddPath(pathStruct)
 		}
 	}
-
+	StationInConnectionIsAStation()
 	FindPathCombWithLeastTurns()
 }
 
 func FindPathCombWithLeastTurns() {
 	allPossiblePaths := models.GetPaths()
 	numOfPaths := len(allPossiblePaths.Paths)
-	// count := numOfPaths
-	_, trainsPerPath := simulateTurns(allPossiblePaths.Paths)
-	simulateTurnsHS2(trainsPerPath)
-
+	instance := models.GetInstance()
 	if numOfPaths == 0 {
-		fmt.Println("Error: there are no valid paths!")
+		err := fmt.Errorf("error: no path exists between the start (%s) and end (%s) stations.",instance.StartStation,instance.EndStation)
+		fmt.Println(err)
+		os.Exit(1)
 	}
-
+		_, trainsPerPath := simulateTurns(allPossiblePaths.Paths)
+	simulateTurnsHS2(trainsPerPath)
 }
-// TODO: remove from 
+
 func simulateTurns(paths []models.Path) (int, []int) {
 	instance := models.GetInstance()
 	trainAmount := instance.NumberOfTrains
@@ -120,8 +123,8 @@ func simulateTurns(paths []models.Path) (int, []int) {
 	_ = models.GetRouts().Routs
 	numOfPaths := len(paths)
 	tempCount := len(trains.Trains)
-	for tempCount > 0 { 
-		for _, train := range trains.Trains { 
+	for tempCount > 0 {
+		for _, train := range trains.Trains {
 			if train.CurrentStation == instance.StartStation {
 				models.GetTrains().UpdateTrainLocation(train.Id, GetNextStationOnPath(train.CurrentStation, 0))
 			} else if train.CurrentStation == instance.EndStation {
@@ -268,11 +271,12 @@ func GetNextStationOnPath(currentStationName string, routNum int) string {
 	return nextStationName
 }
 
+// ? is this function used
 func FindStationConnectionsDistance(station models.Station, connectedStation models.Station) float64 {
 	var distance float64
 	var distanceChange bool = false
-	allConnections,err := models.GetConnectionsP()
-	if err !=nil {
+	allConnections, err := models.GetConnectionsP()
+	if err != nil {
 		fmt.Println(err)
 	}
 	for _, connection := range allConnections.Connections {
@@ -291,7 +295,7 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 }
 
 func GetShortestPath(trainID int) string {
-	currentStation := findStationByName(findCurrentStationName(trainID))
+	currentStation := FindStationByName(findCurrentStationName(trainID))
 	var trainToMoveTo string
 	var distance float64
 	for _, stationConnections := range currentStation.ConnObj {
@@ -308,6 +312,7 @@ func GetShortestPath(trainID int) string {
 	}
 	return trainToMoveTo
 }
+
 // useful for debug
 
 // func displayPaths() {

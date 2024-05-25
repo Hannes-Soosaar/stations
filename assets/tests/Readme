@@ -22,8 +22,8 @@ test27- It completes the movements in no more than 8 turns for 10 trains between
 test28- It completes the movements in no more than 8 turns for 9 trains between small and large                     #PASS
 
 ***input file errors***
-test3 - err1    -displays "Error" on stderr when a connection is made with a station which does not exist.           #FAILED
-test5 - err2    -displays "Error" on stderr when no path exists between the start and end stations.                  #FAILED
+test3 - err1    -displays "Error" on stderr when a connection is made with a station which does not exist.           #PASS
+test5 - err2    -displays "Error" on stderr when no path exists between the start and end stations.                  #PASS
 test6 - err3    -displays "Error" on stderr when station names are duplicated.                                       #PASS
 test7 - err4    -displays "Error" on stderr when station names are invalid.                                          #PASS
 test8 - err5    -displays "Error" on stderr when the map does not contain a "stations:" section.                     #PASS

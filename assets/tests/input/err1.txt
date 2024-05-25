@@ -1,7 +1,6 @@
-# London Network Map duplicate stations name
+# London Network Map displays "Error" on stderr when a connection is made with a station which does not exist.  
 
 stations:
-waterloo,3,1
 waterloo,3,1
 victoria,6,7
 euston,11,23
@@ -13,4 +12,4 @@ waterloo-victoria
 waterloo-euston
 st_pancras-euston
 victoria-st_pancras # some rnd comment ##
-victoria-hannes # some rnd comment ##
+victoria-hannes # connetion to a station that does not exist!
