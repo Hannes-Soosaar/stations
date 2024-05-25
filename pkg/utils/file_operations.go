@@ -80,4 +80,5 @@ func openMapFromFile(path string) {
 	mapConnections(connections)
 	getConnections()
 	checkForDuplicateCoordinates()
+	StationInConnectionIsAStation()
 }

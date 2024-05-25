@@ -1,1 +1,1 @@
-error: no path exists between the start (waterloo) and end (hannes) stations.
+error: Duplicate reversed routes exist between between waterloo and victoria

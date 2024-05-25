@@ -98,7 +98,6 @@ func FindAllUniquePaths() {
 			pathsInstance.AddPath(pathStruct)
 		}
 	}
-	StationInConnectionIsAStation()
 	FindPathCombWithLeastTurns()
 }
 
