@@ -1,0 +1,1 @@
+test26- err12   -displays "Error" on stderr when the map does not contain a "connections:" section.

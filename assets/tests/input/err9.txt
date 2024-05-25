@@ -1,0 +1,7 @@
+# London Network Map -displays "Error" on stderr when the map does not contain a "connections:" section.
+
+stations:
+waterloo,3,1
+victoria,6,1
+euston,11,23
+st_pancras,5,15

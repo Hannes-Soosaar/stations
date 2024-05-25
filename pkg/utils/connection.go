@@ -4,6 +4,7 @@ package utils
 import (
 	"fmt"
 	"math"
+	"os"
 	"strings"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
@@ -11,7 +12,11 @@ import (
 
 func mapConnections(cs []string) {
 	var connection models.Connection
-	connections := models.GetConnectionsP()
+	connections, err := models.GetConnectionsP()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	for _, c := range cs {
 		split := strings.Split(c, "-")
 		if len(split) == 2 {
@@ -22,27 +27,54 @@ func mapConnections(cs []string) {
 		}
 		connections.Connections = append(connections.Connections, connection) // initializes the first struct?
 	}
+
+	for i, connection1 := range connections.Connections {
+		for j, connection2 := range connections.Connections {
+			if i != j {
+
+				if connection1.StationOne == connection2.StationOne && connection1.StationTwo == connection2.StationTwo {		
+					err:=fmt.Errorf("Duplicate routs exists between %s and %s", connection1.StationOne, connection1.StationTwo)
+					fmt.Println(err)
+					os.Exit(1)
+				} else if connection1.StationOne == connection2.StationTwo && connection1.StationTwo == connection2.StationOne {
+					err:=fmt.Errorf("Duplicate reversed routes exist between between %s and %s", connection1.StationOne, connection1.StationTwo)
+					fmt.Println(err)
+					os.Exit(1)
+				}
+			}
+		}
+	}
 }
 
 func getConnections() {
-	allConnections := models.GetConnectionsP()
+
+	allConnections, err := models.GetConnectionsP()
+	if err != nil {
+		fmt.Println(err)
+	}
 	for _, connection := range allConnections.Connections {
 		stationOne := findStationByName(connection.StationOne)
 		stationTwo := findStationByName(connection.StationTwo)
 		if stationOne.Name == connection.StationOne {
 			stationOne.Connections = append(stationOne.Connections, findStationByName(connection.StationTwo))
-			stationOne.ConnObj = append(stationOne.ConnObj, connection) 
+			stationOne.ConnObj = append(stationOne.ConnObj, connection)
 			stationTwo.Connections = append(stationTwo.Connections, findStationByName(connection.StationOne))
 			stationTwo.ConnObj = append(stationTwo.ConnObj, connection)
-			models.GetStationsMap().UpdateStation(stationOne) 
+			models.GetStationsMap().UpdateStation(stationOne)
 			models.GetStationsMap().UpdateStation(stationTwo)
 		}
 	}
 }
-// This function is not used currently for anything practical but might be useful if there is further development done with the programm.
 func AddDistanceToConnection() {
-	allConnections := models.GetConnectionsP()
-	fmt.Printf("error: %v\n", error)
+	allConnections, err := models.GetConnectionsP()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	if len(allConnections.Connections) > 0 {
+
+	}
+
 	deltaCordSqr := make([]float64, 2)
 	for i, connection := range allConnections.Connections {
 		stationOneCord := getStationCord(connection.StationOne)

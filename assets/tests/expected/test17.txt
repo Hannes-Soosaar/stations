@@ -1,0 +1,1 @@
+It finds only a single valid route for 1 train between waterloo and st_pancras in the London Network Map

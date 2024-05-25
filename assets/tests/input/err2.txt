@@ -1,4 +1,4 @@
-# London Network Map duplicate coordinates
+# London Network Map displays "Error" on stderr when no path exists between the start and end stations.
 
 stations:
 waterloo,3,1

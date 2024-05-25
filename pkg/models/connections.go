@@ -1,7 +1,9 @@
 package models
 
 import (
+	"errors"
 	"fmt"
+
 	// "log"
 	"sync"
 )
@@ -12,15 +14,23 @@ type Connections struct {
 
 var connectionsInstance *Connections
 var connectionsOnce sync.Once
-//TODO: needs to give out an error if the connections is called but it remains empty!
-func GetConnectionsP() *Connections {
+
+func GetConnectionsP() (*Connections,error) {
+	var err error
 	connectionsOnce.Do(func() {
 		connectionsInstance = &Connections{}
+	if connectionsInstance == nil { 
+			err = errors.New("there are no connections between stations")
+		}
 	})
-	return connectionsInstance
+	if err != nil {
+		return nil,err
+	}
+	return connectionsInstance, err
 }
 
 func (s *Connections) UpdateConnections(c Connection) error {
+	fmt.Println(s.Connections)
 	for i, connection := range s.Connections {
 		if connection.StationOne == c.StationOne && connection.StationTwo == c.StationTwo {
 			s.Connections[i].Distance = c.Distance

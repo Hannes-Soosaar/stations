@@ -1,0 +1,1 @@
+test25- err11   -displays "Error" on stderr when two stations exist at the same coordinates.

@@ -1,0 +1,1 @@
+displays "Error" on stderr when duplicate routes exist between two stations, including in reverse.

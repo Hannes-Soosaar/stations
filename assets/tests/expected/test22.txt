@@ -1,0 +1,1 @@
+test22 -err8    -displays "Error" on stderr when the end station does not exist.

@@ -10,8 +10,6 @@ import (
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-//TODO: Rename file to paths
-//TODO: Move to models
 type QueueNode struct {
 	Station *models.Station
 	Prev    *QueueNode
@@ -285,7 +283,10 @@ func GetNextStationOnPath(currentStationName string, routNum int) string {
 func FindStationConnectionsDistance(station models.Station, connectedStation models.Station) float64 {
 	var distance float64
 	var distanceChange bool = false
-	allConnections := models.GetConnectionsP()
+	allConnections,err := models.GetConnectionsP()
+	if err !=nil {
+		fmt.Println(err)
+	}
 	for _, connection := range allConnections.Connections {
 		if connection.StationOne == station.Name && connection.StationTwo == connectedStation.Name {
 			distance = connection.Distance

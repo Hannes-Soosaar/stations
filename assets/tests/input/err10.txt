@@ -1,0 +1,15 @@
+# London Network Map -displays "Error" on stderr when duplicate routes exist between two stations, including in reverse.
+
+stations:
+waterloo,3,1
+victoria,6,7
+euston,11,23
+st_pancras,5,15
+
+connections:
+waterloo-victoria
+#waterloo-victoria
+victoria-waterloo
+waterloo-euston
+st_pancras-euston
+victoria-st_pancras

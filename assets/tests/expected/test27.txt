@@ -1,3 +1,7 @@
+test27- It completes the movements in no more than 8 turns for 10 trains between jungle and desert
+
+The Division is different on the Kood example, however the number of turns and rout are valid!
+
 T1-grasslands T2-farms T3-green_belt
 T1-suburbs T2-downtown T3-village T4-grasslands T5-farms T6-green_belt
 T1-clouds T2-metropolis T3-mountain T4-suburbs T5-downtown T6-village T7-grasslands T8-farms T9-green_belt
