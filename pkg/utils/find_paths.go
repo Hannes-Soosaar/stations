@@ -32,26 +32,21 @@ func FindPathWithBFS() ([]string, bool) {
 		current := node.Station
 		if current.Name == instance.EndStation {
 			var path []string
-
 			for node != nil {
 				path = append([]string{node.Station.Name}, path...)
 				node = node.Prev
 			}
 			fmt.Println("Path:")
 			for _, stationName := range path {
-
 				fmt.Println(stationName)
 			}
 			fmt.Println("----------------------------")
-
 			rout := models.Rout{
 				StationNames: path,
 			}
-
 			models.GetRouts().AddRoutToRouts(rout)
 			return path, true
 		}
-
 		for _, connectedStation := range FindStationByName(current.Name).Connections {
 			neighbor := FindStationByName(connectedStation.Name)
 			if !connectedStation.IsVisited {
@@ -72,7 +67,6 @@ func FindPathWithBFS() ([]string, bool) {
 			}
 		}
 	}
-
 	return nil, false
 }
 
@@ -169,7 +163,6 @@ func simulateTurnsHS2(trainsPerPath []int) {
 	result := ""
 	turns := 1
 	routeStationsMap := make(map[int]map[string]bool)
-
 	for i := 0; i < instance.NumberOfTrains; i++ {
 		train := models.Train{
 			Id:             i,
@@ -177,7 +170,6 @@ func simulateTurnsHS2(trainsPerPath []int) {
 		}
 		trains.Trains = append(trains.Trains, train)
 	}
-
 	for i, rout := range routs.Routs {
 		stationMap := make(map[string]bool)
 		for _, station := range rout.StationNames {
@@ -188,19 +180,19 @@ func simulateTurnsHS2(trainsPerPath []int) {
 
 	designateRoutsToTrains(trainsPerPath)
 
-	for !allTrainsAtDestination { // checks to see how many trains are waiting
+	for !allTrainsAtDestination { 
 		result = ""
-		for _, train1 := range trains.Trains { // go through the
-			if !train1.IsAtDestination { // check if its at the end
+		for _, train1 := range trains.Trains { 
+			if !train1.IsAtDestination { 
 				nextStation := GetNextStationOnPath(train1.CurrentStation, train1.TrainOnRout)
 				if stationMap, exists := routeStationsMap[train1.TrainOnRout]; exists {
 					if val, ok := stationMap[nextStation]; ok && !val {
-						routeStationsMap[train1.TrainOnRout][nextStation] = true            //sets the next station to occupied
-						routeStationsMap[train1.TrainOnRout][train1.CurrentStation] = false // sets the current station as free
-						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false // if the last station
+						routeStationsMap[train1.TrainOnRout][nextStation] = true        
+						routeStationsMap[train1.TrainOnRout][train1.CurrentStation] = false 
+						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false 
 						models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 						if train1.CurrentStation != instance.StartStation {
-							result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " // plus one to get the trains to start form 1
+							result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " 
 						}
 						if nextStation == instance.EndStation {
 							models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
@@ -209,7 +201,7 @@ func simulateTurnsHS2(trainsPerPath []int) {
 					}
 				}
 			} else if train1.IsAtDestination && !train1.DestinationPrinted {
-				result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " // plus one to get the trains to start form 1
+				result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " 
 				models.GetTrains().SetDestinationPrintedById(train1.Id)
 				routeStationsMap[train1.TrainOnRout][instance.EndStation] = false
 			}

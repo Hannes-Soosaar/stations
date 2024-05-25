@@ -1,7 +1,0 @@
-package constdef
-
-
-const (
-	// add errors here
-	MyError = "newError";
-)

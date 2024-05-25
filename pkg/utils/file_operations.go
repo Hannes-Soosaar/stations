@@ -38,7 +38,6 @@ func openMapFromFile(path string) {
 			isStationSection = true
 			isConnectionSection = false
 			hasStationSection = true
-
 		} else if line == "connections:" {
 			isConnectionSection = true
 			isStationSection = false
@@ -47,8 +46,7 @@ func openMapFromFile(path string) {
 			continue
 		}
 		if isStationSection {
-			if line == "stations:" {
-				
+			if line == "stations:" {	
 				continue
 			}
 			stationCounter++
@@ -58,11 +56,8 @@ func openMapFromFile(path string) {
 				continue
 			}
 			connections = append(connections, line)
-		} else {
-			// fmt.Println("not in any section!")
 		}
 	}
-
 	if !hasConnectionStation {
 		err := fmt.Errorf("error: the \" %s \" has no Connections: section", path)
 		fmt.Println(err)
