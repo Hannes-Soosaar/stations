@@ -2,7 +2,6 @@ package models
 
 import (
 	"sync"
-	// "golang.org/x/text/unicode/rangetable"
 )
 
 type Trains struct {

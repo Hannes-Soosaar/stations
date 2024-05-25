@@ -1,1 +1,16 @@
-Duplicate reversed routes exist between between waterloo and victoria
+Path:
+waterloo
+victoria
+st_pancras
+----------------------------
+Path:
+waterloo
+euston
+st_pancras
+----------------------------
+1
+1
+----------------------------
+
+T1-victoria 
+T1-st_pancras 

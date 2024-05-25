@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -24,9 +25,20 @@ func addStationsToMap(line string) {
 	if err != nil {
 		fmt.Println("Error: ", err)
 	}
+
 	newStation.X = float64(x)
 	newStation.Y = float64(y)
+
+	if x < 0 || y < 0{
+		err := fmt.Errorf("error: Station: %s coordinates (X: %d ,Y: %d) are not valid. Coordinates must be positive integers or 0 ", newStation.Name,x,y)
+		fmt.Println(err)
+		os.Exit(1)
+
+	}
+
 	stations.StationsMap = append(stations.StationsMap, newStation)
+
+
 }
 
 func findStationByName(name string) models.Station {
@@ -51,3 +63,4 @@ func getStationCord(stationName string) []float64 {
 	}
 	return stationCoordinates
 }
+

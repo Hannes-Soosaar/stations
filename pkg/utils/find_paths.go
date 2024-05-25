@@ -1,10 +1,8 @@
 package utils
 
 import (
-	"bufio"
 	"container/list"
 	"fmt"
-	"os"
 	"strconv"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
@@ -16,7 +14,6 @@ type QueueNode struct {
 }
 
 func FindPathWithBFS() ([]string, bool) {
-
 	instance := models.GetInstance()
 	start := findStationByName(instance.StartStation)
 	start.IsVisited = true
@@ -105,15 +102,14 @@ func FindAllUniquePaths() {
 func FindPathCombWithLeastTurns() {
 	allPossiblePaths := models.GetPaths()
 	numOfPaths := len(allPossiblePaths.Paths)
-	count := numOfPaths
+	// count := numOfPaths
 	_, trainsPerPath := simulateTurns(allPossiblePaths.Paths)
 	simulateTurnsHS2(trainsPerPath)
 
 	if numOfPaths == 0 {
 		fmt.Println("Error: there are no valid paths!")
 	}
-	for j := 0; j < count; j++ {
-	}
+
 }
 // TODO: remove from 
 func simulateTurns(paths []models.Path) (int, []int) {
@@ -124,28 +120,23 @@ func simulateTurns(paths []models.Path) (int, []int) {
 	_ = models.GetRouts().Routs
 	numOfPaths := len(paths)
 	tempCount := len(trains.Trains)
-
-	for tempCount > 0 { // checks to see how many trains are waiting
-		// log.Println(tempCount)
-		for _, train := range trains.Trains { // go through the trains
+	for tempCount > 0 { 
+		for _, train := range trains.Trains { 
 			if train.CurrentStation == instance.StartStation {
 				models.GetTrains().UpdateTrainLocation(train.Id, GetNextStationOnPath(train.CurrentStation, 0))
 			} else if train.CurrentStation == instance.EndStation {
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 			if train.CurrentStation == instance.EndStation {
-				// fmt.Printf("Train At finish %s", train.CurrentStation)
 				models.GetTrains().RemoveTrainById(train.Id)
 			}
 		}
 		tempCount--
 	}
-
 	var minTurnCounts []int
 	var turnCount int = 0
 	var trainsOnPath = make([]int, numOfPaths)
 	var trainsOnCurrentPath int
-
 	for i := 0; i < numOfPaths; i++ {
 		minTurnCount := len(paths[i].PathStations) - 1
 		minTurnCounts = append(minTurnCounts, minTurnCount)
@@ -159,10 +150,8 @@ func simulateTurns(paths []models.Path) (int, []int) {
 				trainsOnCurrentPath = trainsOnPath[i] + 1
 				trainsOnPath[i] = trainsOnCurrentPath
 			}
-
 		}
 	}
-
 	for _, trainOnPath := range trainsOnPath {
 		fmt.Println(trainOnPath)
 	}
@@ -206,7 +195,6 @@ func simulateTurnsHS2(trainsPerPath []int) {
 					if val, ok := stationMap[nextStation]; ok && !val {
 						routeStationsMap[train1.TrainOnRout][nextStation] = true            //sets the next station to occupied
 						routeStationsMap[train1.TrainOnRout][train1.CurrentStation] = false // sets the current station as free
-						// routeStationsMap[train1.TrainOnRout][instance.EndStation] = false   //! if the last station
 						routeStationsMap[train1.TrainOnRout][instance.StartStation] = false // if the last station
 						models.GetTrains().UpdateTrainLocation(train1.Id, nextStation)
 						if train1.CurrentStation != instance.StartStation {
@@ -221,7 +209,7 @@ func simulateTurnsHS2(trainsPerPath []int) {
 			} else if train1.IsAtDestination && !train1.DestinationPrinted {
 				result += "T" + strconv.Itoa(train1.Id+1) + "-" + train1.CurrentStation + " " // plus one to get the trains to start form 1
 				models.GetTrains().SetDestinationPrintedById(train1.Id)
-				routeStationsMap[train1.TrainOnRout][instance.EndStation] = false   //! if the last station
+				routeStationsMap[train1.TrainOnRout][instance.EndStation] = false
 			}
 		}
 		fmt.Println(result)
@@ -302,7 +290,6 @@ func FindStationConnectionsDistance(station models.Station, connectedStation mod
 	return distance
 }
 
-// ? Do we need this
 func GetShortestPath(trainID int) string {
 	currentStation := findStationByName(findCurrentStationName(trainID))
 	var trainToMoveTo string
@@ -321,17 +308,18 @@ func GetShortestPath(trainID int) string {
 	}
 	return trainToMoveTo
 }
+// useful for debug
 
-func displayPaths() {
-	routs := models.GetRouts()
-	for i, path := range routs.Routs {
-		fmt.Printf("Currently at path %d \n ", i)
-		fmt.Println(path)
-	}
-}
+// func displayPaths() {
+// 	routs := models.GetRouts()
+// 	for i, path := range routs.Routs {
+// 		fmt.Printf("Currently at path %d \n ", i)
+// 		fmt.Println(path)
+// 	}
+// }
 
-func waitForKeyPress() {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print(" ...")
-	reader.ReadString('\n')
-}
+// func waitForKeyPress() {
+// 	reader := bufio.NewReader(os.Stdin)
+// 	fmt.Print(" ...")
+// 	reader.ReadString('\n')
+// }

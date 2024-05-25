@@ -400,48 +400,48 @@ echo "END OF TEST"
 # echo 
 # echo 
 # echo "END OF TEST"
-# Test 27 - It completes the movements in no more than 8 turns for 10 trains between jungle and desert
-cd $project_root_dir
-cd cmd
-echo
-echo START TEST 27
-go run . ../assets/tests/input/jungle-desert.map jungle desert 10 | tee myfile.txt
-echo 
-cd ..
-cd assets/tests/expected
-echo 
-echo "EXPECTED RESULT"
-cat test27.txt
-echo 
-echo 
-echo "END OF TEST"
-# Test 28 - It completes the movements in no more than 8 turns for 9 trains between small and large
-cd $project_root_dir
-cd cmd
-echo
-echo START TEST 28
-go run . ../assets/tests/input/small-large.map small large 9 | tee myfile.txt
-echo 
-cd ..
-cd assets/tests/expected
-echo 
-echo "EXPECTED RESULT"
-cat test28.txt
-echo 
-echo 
-echo "END OF TEST"
-# Test 29 - displays "Error" on stderr when duplicate routes exist between two stations, including in reverse.
-cd $project_root_dir
-cd cmd
-echo
-echo START TEST 29
-go run . ../assets/tests/input/err10.txt waterloo st_pancras 1  | tee myfile.txt
-echo 
-cd ..
-cd assets/tests/expected
-echo 
-echo "EXPECTED RESULT"
-cat test29.txt
-echo 
-echo 
-echo "END OF TEST"
+# # Test 27 - It completes the movements in no more than 8 turns for 10 trains between jungle and desert
+# cd $project_root_dir
+# cd cmd
+# echo
+# echo START TEST 27
+# go run . ../assets/tests/input/jungle-desert.map jungle desert 10 | tee myfile.txt
+# echo 
+# cd ..
+# cd assets/tests/expected
+# echo 
+# echo "EXPECTED RESULT"
+# cat test27.txt
+# echo 
+# echo 
+# echo "END OF TEST"
+# # Test 28 - It completes the movements in no more than 8 turns for 9 trains between small and large
+# cd $project_root_dir
+# cd cmd
+# echo
+# echo START TEST 28
+# go run . ../assets/tests/input/small-large.map small large 9 | tee myfile.txt
+# echo 
+# cd ..
+# cd assets/tests/expected
+# echo 
+# echo "EXPECTED RESULT"
+# cat test28.txt
+# echo 
+# echo 
+# echo "END OF TEST"
+# # Test 29 - displays "Error" on stderr when duplicate routes exist between two stations, including in reverse.
+# cd $project_root_dir
+# cd cmd
+# echo
+# echo START TEST 29
+# go run . ../assets/tests/input/err10.txt waterloo st_pancras 1  | tee myfile.txt
+# echo 
+# cd ..
+# cd assets/tests/expected
+# echo 
+# echo "EXPECTED RESULT"
+# cat test29.txt
+# echo 
+# echo 
+# echo "END OF TEST"

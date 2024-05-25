@@ -28,14 +28,14 @@ test6 - err3    -displays "Error" on stderr when station names are duplicated.  
 test7 - err4    -displays "Error" on stderr when station names are invalid.                                          #FAILED
 test8 - err5    -displays "Error" on stderr when the map does not contain a "stations:" section.                     #FAILED
 test9 - err6    -displays "Error" on stderr when a map contains more than 10000 stations.                            #FAILED
-test24- err7   -displays "Error" on stderr when any of the coordinates are not valid positive integers.              #FAILED
+test24- err7   -displays "Error" on stderr when any of the coordinates are not valid positive integers.              #PASS
 test25- err8   -displays "Error" on stderr when two stations exist at the same coordinates.                          #FAILED
-test26- err9   -displays "Error" on stderr when the map does not contain a "connections:" section.                   #FAILED
+test26- err9   -displays "Error" on stderr when the map does not contain a "connections:" section.                   #PASS
 test29- err10   -displays "Error" on stderr when duplicate routes exist between two stations, including in reverse.  #PASS
 
 
 ***i/o cli errors*** 
-test 1 -displays "Error" on stderr when the number of trains is not a valid positive integer.   #FAILED/PASS says it must be a valid number.
+test 1 -displays "Error" on stderr when the number of trains is not a valid positive integer.   #PASS
 test18 -displays "Error" on stderr when too few command line arguments are used                 #PASS
 test19 -It displays "Error" on stderr when too many command line arguments are used.            #PASS
 test21 -displays "Error" on stderr when the start station does not exist.                       #PASS need to add details!

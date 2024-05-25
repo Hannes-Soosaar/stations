@@ -69,10 +69,12 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	// input CLI
 	trainAmount, err := strconv.Atoi(trainAmountStr)
 	if err != nil {
-		errorMessage += "Train amount has to be a number. "
+		errorMessage += "error: train amount has to be a number. "
 	} else {
-		if trainAmount < 1 {
-			errorMessage += "There has to be at least 1 train. "
+		if trainAmount == 0 {
+			errorMessage += "error: there has to be at least 1 train. "
+		} else if  trainAmount < 0 {
+			errorMessage += " error: the number of trains has to be a positive integer. "
 		}
 	}
 	// return all CLI errors.

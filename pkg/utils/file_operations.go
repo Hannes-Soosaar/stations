@@ -16,6 +16,8 @@ func openMapFromFile(path string) {
 	defer mapFile.Close()
 	isStationSection := false
 	isConnectionSection := false
+	hasStationSection := false
+	hasConnectionStation := false
 	scanner := bufio.NewScanner(mapFile)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -34,9 +36,11 @@ func openMapFromFile(path string) {
 		if line == "stations:" {
 			isStationSection = true
 			isConnectionSection = false
+			hasStationSection = true
 		} else if line == "connections:" {
 			isConnectionSection = true
 			isStationSection = false
+			hasConnectionStation = true
 		} else if line == "" {
 			continue
 		}
@@ -54,6 +58,17 @@ func openMapFromFile(path string) {
 			fmt.Println("not in any section!")
 		}
 	}
+
+	if !hasConnectionStation {
+		err := fmt.Errorf("error: the \" %s \" has no Connections: section", path)
+		fmt.Println(err)
+		os.Exit(1)
+	} else if !hasStationSection {
+		err := fmt.Errorf("error: the \" %s \" has no Station: section", path)
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	mapConnections(connections)
 	getConnections()
 }

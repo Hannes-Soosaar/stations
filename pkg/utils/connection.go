@@ -33,11 +33,11 @@ func mapConnections(cs []string) {
 			if i != j {
 
 				if connection1.StationOne == connection2.StationOne && connection1.StationTwo == connection2.StationTwo {		
-					err:=fmt.Errorf("Duplicate routs exists between %s and %s", connection1.StationOne, connection1.StationTwo)
+					err:=fmt.Errorf("error: Duplicate routs exists between %s and %s", connection1.StationOne, connection1.StationTwo)
 					fmt.Println(err)
 					os.Exit(1)
 				} else if connection1.StationOne == connection2.StationTwo && connection1.StationTwo == connection2.StationOne {
-					err:=fmt.Errorf("Duplicate reversed routes exist between between %s and %s", connection1.StationOne, connection1.StationTwo)
+					err:=fmt.Errorf("error: Duplicate reversed routes exist between between %s and %s", connection1.StationOne, connection1.StationTwo)
 					fmt.Println(err)
 					os.Exit(1)
 				}
