@@ -10,16 +10,14 @@ import (
 )
 
 func addStationsToMap(line string) {
-
 	newStation := models.Station{}
 	params := strings.Split(line, ",")
 	stations := models.GetStationsMap()
 	if len(params) != 3 {
-		err := fmt.Errorf("The line %s in stations is invalid. A station must have a valid name and valid coordinates \" name,1,1 \"", line)
+		err := fmt.Errorf("The line %s in stations is invalid. A station must have a valid name and valid coordinates example: \" station_name,1,1 \"", line)
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
 	newStation.Name = params[0]
 	x, err := strconv.Atoi(params[1])
 	if err != nil {
@@ -29,14 +27,11 @@ func addStationsToMap(line string) {
 	if err != nil {
 		fmt.Println("Error: ", err)
 	}
-
 	newStation.X = float64(x)
 	newStation.Y = float64(y)
-
 	checkStationCoordinates(x, y, newStation.Name)
 	checkStationName(newStation.Name)
 	stations.StationsMap = append(stations.StationsMap, newStation)
-
 }
 
 func findStationByName(name string) models.Station {

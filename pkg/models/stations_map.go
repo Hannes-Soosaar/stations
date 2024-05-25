@@ -22,12 +22,11 @@ func GetStationsMap() *StationsMap {
 func (s *StationsMap) UpdateStation(stationToUpdate Station) error {
 	for i, station := range s.StationsMap {
 		if station.Name == stationToUpdate.Name {
-			// Update the station at index i
 			s.StationsMap[i] = stationToUpdate
 			return nil
 		}
 	}
-	return fmt.Errorf("station with name %s not found", stationToUpdate.Name)
+	return fmt.Errorf("error: station with name %s not found", stationToUpdate.Name)
 }
 
 func (s *StationsMap) UpdateStationConnection(connectionToUpdate Connection) error {
@@ -38,5 +37,5 @@ func (s *StationsMap) UpdateStationConnection(connectionToUpdate Connection) err
 			}
 		}
 	}
-	return fmt.Errorf("station with name %s not found", connectionToUpdate.StationOne)
+	return fmt.Errorf("error: station with name %s not found", connectionToUpdate.StationOne)
 }

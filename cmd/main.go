@@ -12,6 +12,7 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
-	utils.AddDistanceToConnection()
+	utils.AddConnectionToStations()
+	// utils.AddDistanceToConnection()
 	utils.FindAllUniquePaths()
 }

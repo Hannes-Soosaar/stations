@@ -1,1 +1,1 @@
-error: the station Hannes name is invalid. A station name can only contain lower case letters, positive integers and  an '_' 
+error: in the {st_pancras euston 0} connection connects to a station that does not exist 

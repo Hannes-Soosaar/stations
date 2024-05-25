@@ -24,17 +24,13 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
 
-	//TODO: write directly to instance
 	networkMap := os.Args[1]
 	startStation := os.Args[2]
 	endStation := os.Args[3]
 	trainAmountStr := os.Args[4]
-
-
 	startStationFound := false
 	endStationFound := false
 
-	//TODO move to file_utils
 	mapFile, err := os.Open(networkMap)
 	if err != nil {
 		return "", "", "", 0, fmt.Errorf("error opening network map file: %v", err)
@@ -50,23 +46,18 @@ func GetAndCheckInput() (string, string, string, int, error) {
 			endStationFound = true
 		}
 	}
-	// File operation error
 	if err := scanner.Err(); err != nil {
 		return "", "", "", 0, fmt.Errorf("error scanning network map file: %v", err)
 	}
-	// Map validation
 	if !startStationFound {
 		errorMessage += "Error the entered START station "+startStation+" does not exist on the:"+ networkMap
 	}
-	// Map validation
 	if !endStationFound {
 		errorMessage += "Error the entered END station "+endStation+" does not exist on the:"+ networkMap
 	}
-	// input CLI
 	if startStation == endStation {
 		errorMessage += "The START: "+ startStation+" and END: "+endStation+" stations cannot be the same. "
 	}
-	// input CLI
 	trainAmount, err := strconv.Atoi(trainAmountStr)
 	if err != nil {
 		errorMessage += "error: train amount has to be a number. "
@@ -77,11 +68,11 @@ func GetAndCheckInput() (string, string, string, int, error) {
 			errorMessage += " error: the number of trains has to be a positive integer. "
 		}
 	}
-	// return all CLI errors.
 	if errorMessage != "" {
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
-	// check CLI input, if OK create instance.
+
+	
 	models.InitInstance(networkMap, startStation, endStation, trainAmount)
 	instance := models.GetInstance()
 	// create instance stationsMap

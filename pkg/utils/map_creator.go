@@ -2,11 +2,10 @@ package utils
 
 import (
 	"fmt"
-
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-func addConnectionToStations() {
+func AddConnectionToStations() {
 	connections,err := models.GetConnectionsP()
 	if err !=nil {
 		fmt.Println(err)
@@ -15,10 +14,10 @@ func addConnectionToStations() {
 	if len(connections.Connections)>1{
 		fmt.Errorf("There are no connections")
 	}
-	
 	stations := models.GetStationsMap()
 
 
+	//TODO: Stations and connections are added here 
 	for _, connection := range connections.Connections {
 		for _, station := range stations.StationsMap {
 			if station.Name == connection.StationOne {

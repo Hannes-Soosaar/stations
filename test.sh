@@ -49,28 +49,28 @@ echo displays "Error" on stderr when a connection is made with a station which d
 echo 
 echo "END OF TEST"
 echo 
-# # Test 4 - completes the movements in no more than 6 turns for 4 trains between bond_square and space_port
-# cd $project_root_dir
-# cd cmd
-# echo
-# echo START TEST 4
-# go run . ../assets/tests/input/space-port.map bond_square space_port 4 | tee myfile.txt
-# echo 
-# cd ..
-# cd assets/tests/expected
-# echo 
-# echo "EXPECTED RESULT"
-# cat test4.txt
-# echo 
-# echo 
-# echo "END OF TEST"
-# Test 5 - displays "Error" on stderr when no path exists between the start and end stations. london.map
+# Test 4 - completes the movements in no more than 6 turns for 4 trains between bond_square and space_port
+cd $project_root_dir
+cd cmd
+echo
+echo START TEST 4
+go run . ../assets/tests/input/space-port.map bond_square space_port 4 | tee myfile.txt
+echo 
+cd ..
+cd assets/tests/expected
+echo 
+echo "EXPECTED RESULT"
+cat test4.txt
+echo 
+echo 
+echo "END OF TEST"
+Test 5 - displays "Error" on stderr when no path exists between the start and end stations. london.map
 cd $project_root_dir
 cd cmd
 echo
 echo SART TEST 5
 echo
-go run . ../assets/tests/input/err2.txt  waterloo Hannes 4 | tee myfile.txt
+go run . ../assets/tests/input/err2.txt  waterloo hannes 4 | tee myfile.txt
 echo 
 cd ..
 cd assets/tests/expected
