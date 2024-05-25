@@ -18,6 +18,7 @@ func openMapFromFile(path string) {
 	isConnectionSection := false
 	hasStationSection := false
 	hasConnectionStation := false
+	stationCounter := 0
 	scanner := bufio.NewScanner(mapFile)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -37,6 +38,7 @@ func openMapFromFile(path string) {
 			isStationSection = true
 			isConnectionSection = false
 			hasStationSection = true
+
 		} else if line == "connections:" {
 			isConnectionSection = true
 			isStationSection = false
@@ -46,8 +48,10 @@ func openMapFromFile(path string) {
 		}
 		if isStationSection {
 			if line == "stations:" {
+				
 				continue
 			}
+			stationCounter++
 			addStationsToMap(line)
 		} else if isConnectionSection {
 			if line == "connections:" {
@@ -55,7 +59,7 @@ func openMapFromFile(path string) {
 			}
 			connections = append(connections, line)
 		} else {
-			fmt.Println("not in any section!")
+			// fmt.Println("not in any section!")
 		}
 	}
 
@@ -67,8 +71,12 @@ func openMapFromFile(path string) {
 		err := fmt.Errorf("error: the \" %s \" has no Station: section", path)
 		fmt.Println(err)
 		os.Exit(1)
+	}  
+	if stationCounter > 10000 {
+		err := fmt.Errorf("error: the \" %s \" has %d Stations. A map can not have more than 10 000 stations", path, stationCounter)
+		fmt.Println(err)
+		os.Exit(1)
 	}
-	
 	mapConnections(connections)
 	getConnections()
 	checkForDuplicateCoordinates()

@@ -56,11 +56,11 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	}
 	// Map validation
 	if !startStationFound {
-		errorMessage += "Entered starting station does not exist in this map. "
+		errorMessage += "Error the entered START station "+startStation+" does not exist on the:"+ networkMap
 	}
 	// Map validation
 	if !endStationFound {
-		errorMessage += "Entered ending station does not exist in this map. "
+		errorMessage += "Error the entered END station "+endStation+" does not exist on the:"+ networkMap
 	}
 	// input CLI
 	if startStation == endStation {

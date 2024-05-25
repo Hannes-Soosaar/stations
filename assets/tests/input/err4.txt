@@ -2,8 +2,8 @@
 |
 stations:
 23453waterloo,3,1
-victo!!$@$#%@%^ria,6,7
-eust        65654on,11,23
+victo!!$@$%@%^ria,1,2
+eust65654on,11,23
 st_pancras,5,15
 #comment
   #  ## stuff, station!

@@ -1,1 +1,1 @@
-Error: The START: waterloo and END: waterloo stations cannot be the same. 
+error: the station victo!!$@$%@%^ria name is invalid. A station name can only contain lower case letters, positive integers and  an '_' 

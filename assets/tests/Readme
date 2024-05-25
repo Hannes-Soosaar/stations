@@ -16,7 +16,7 @@ test13- It completes the movements in no more than 6 turns for 4 trains between 
 test14- It can find more than one route for 2 trains between waterloo and st_pancras for the London Network Map     #PASS
 test15- It finds more than one valid route for 3 trains between waterloo and st_pancras in the London Network Map   #PASS
 test16- It finds more than one valid route for 4 trains between waterloo and st_pancras in the London Network Map   #PASS
-test17- It finds only a single valid route for 1 train between waterloo and st_pancras in the London Network Map    #PASS/FAIL
+test17- It finds only a single valid route for 1 train between waterloo and st_pancras in the London Network Map    #PASS
 test20- It works with additional tricky cases.                                                                      #NOT TESTED / #PASS
 test27- It completes the movements in no more than 8 turns for 10 trains between jungle and desert                  #PASS
 test28- It completes the movements in no more than 8 turns for 9 trains between small and large                     #PASS
@@ -25,9 +25,9 @@ test28- It completes the movements in no more than 8 turns for 9 trains between 
 test3 - err1    -displays "Error" on stderr when a connection is made with a station which does not exist.           #FAILED
 test5 - err2    -displays "Error" on stderr when no path exists between the start and end stations.                  #FAILED
 test6 - err3    -displays "Error" on stderr when station names are duplicated.                                       #FAILED
-test7 - err4    -displays "Error" on stderr when station names are invalid.                                          #FAILED
-test8 - err5    -displays "Error" on stderr when the map does not contain a "stations:" section.                     #FAILED
-test9 - err6    -displays "Error" on stderr when a map contains more than 10000 stations.                            #FAILED
+test7 - err4    -displays "Error" on stderr when station names are invalid.                                          #PASS
+test8 - err5    -displays "Error" on stderr when the map does not contain a "stations:" section.                     #PASS
+test9 - err6    -displays "Error" on stderr when a map contains more than 10000 stations.                            #PASS
 test24- err7   -displays "Error" on stderr when any of the coordinates are not valid positive integers.              #PASS
 test25- err8   -displays "Error" on stderr when two stations exist at the same coordinates.                          #PASS
 test26- err9   -displays "Error" on stderr when the map does not contain a "connections:" section.                   #PASS
@@ -38,6 +38,6 @@ test29- err10   -displays "Error" on stderr when duplicate routes exist between 
 test 1 -displays "Error" on stderr when the number of trains is not a valid positive integer.   #PASS
 test18 -displays "Error" on stderr when too few command line arguments are used                 #PASS
 test19 -It displays "Error" on stderr when too many command line arguments are used.            #PASS
-test21 -displays "Error" on stderr when the start station does not exist.                       #PASS need to add details!
-test22 -displays "Error" on stderr when the end station does not exist.                         #PASS need to add details!
+test21 -displays "Error" on stderr when the start station does not exist.                       #PASS
+test22 -displays "Error" on stderr when the end station does not exist.                         #PASS
 test23 -displays "Error" on stderr when the start and end station are the same.                 #PASS
