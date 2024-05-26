@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
 	"gitea.kood.tech/hannessoosaar/stations/pkg/models"
 )
 
-// TODO this code should be refactored 
+// TODO this code should be refactored
 
 func GetAndCheckInput() (string, string, string, int, error) {
 
@@ -30,8 +31,15 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	trainAmountStr := os.Args[4]
 	startStationFound := false
 	endStationFound := false
+	dir := ""
+
+	if !strings.Contains(networkMap, "../assets/tests/input") {
+		dir = "../assets/input/"
+		networkMap = filepath.Join(dir, networkMap)
+	}
 
 	mapFile, err := os.Open(networkMap)
+	fmt.Println(networkMap)
 	if err != nil {
 		return "", "", "", 0, fmt.Errorf("error opening network map file: %v", err)
 	}
@@ -50,13 +58,13 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		return "", "", "", 0, fmt.Errorf("error scanning network map file: %v", err)
 	}
 	if !startStationFound {
-		errorMessage += "Error the entered START station "+startStation+" does not exist on the:"+ networkMap
+		errorMessage += "Error the entered START station " + startStation + " does not exist on the:" + networkMap
 	}
 	if !endStationFound {
-		errorMessage += "Error the entered END station "+endStation+" does not exist on the:"+ networkMap
+		errorMessage += "Error the entered END station " + endStation + " does not exist on the:" + networkMap
 	}
 	if startStation == endStation {
-		errorMessage += "The START: "+ startStation+" and END: "+endStation+" stations cannot be the same. "
+		errorMessage += "The START: " + startStation + " and END: " + endStation + " stations cannot be the same. "
 	}
 	trainAmount, err := strconv.Atoi(trainAmountStr)
 	if err != nil {
@@ -64,7 +72,7 @@ func GetAndCheckInput() (string, string, string, int, error) {
 	} else {
 		if trainAmount == 0 {
 			errorMessage += "error: there has to be at least 1 train. "
-		} else if  trainAmount < 0 {
+		} else if trainAmount < 0 {
 			errorMessage += " error: the number of trains has to be a positive integer. "
 		}
 	}
@@ -72,7 +80,6 @@ func GetAndCheckInput() (string, string, string, int, error) {
 		return "", "", "", 0, fmt.Errorf(errorMessage)
 	}
 
-	
 	models.InitInstance(networkMap, startStation, endStation, trainAmount)
 	instance := models.GetInstance()
 	// create instance stationsMap

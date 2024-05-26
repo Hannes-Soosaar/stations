@@ -1,1 +1,2 @@
+../assets/tests/input/err10.txt
 error: Duplicate reversed routes exist between between waterloo and victoria

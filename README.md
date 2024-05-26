@@ -1,5 +1,3 @@
-# Pathfinder algorithm
-
 ## Overview
 
 This program is designed to find the most efficient paths for trains to travel from a start station to an end station on a given network map. It is implemented in Go and can be executed via the command line interface (CLI). The program also includes built-in tests to ensure functionality and correctness.
@@ -29,4 +27,5 @@ Example:
 ## Running tests
 
 The program includes built-in tests to verify its functionality.
+Run ```$make init``` in the parent directory
 Run all the tests with ```make run```
