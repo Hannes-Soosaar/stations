@@ -27,5 +27,7 @@ Example:
 ## Running tests
 
 The program includes built-in tests to verify its functionality.
-Run ```$make init``` in the parent directory
+
+Run ```make init``` in the parent directory
+
 Run all the tests with ```make run```
