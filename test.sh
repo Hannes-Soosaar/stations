@@ -27,6 +27,7 @@ cd ..
 cd assets/tests/expected
 echo 
 echo "EXPECTED RESULT"
+echo
 cat test2.txt
 echo 
 echo "END OF TEST"
@@ -35,7 +36,7 @@ echo
 cd $project_root_dir
 cd cmd
 echo
-echo SART TEST 3
+echo START TEST 3
 echo
 go run . ../assets/tests/input/err1.txt  waterloo st_pancras 4 | tee myfile.txt
 echo 
@@ -66,7 +67,7 @@ Test 5 - displays "Error" on stderr when no path exists between the start and en
 cd $project_root_dir
 cd cmd
 echo
-echo SART TEST 5
+echo START TEST 5
 echo
 go run . ../assets/tests/input/err2.txt  waterloo hannes 4 | tee myfile.txt
 echo 
@@ -82,7 +83,7 @@ Test 6 - displays "Error" on stderr when station names are duplicated. london.ma
 cd $project_root_dir
 cd cmd
 echo
-echo SART TEST 6
+echo START TEST 6
 echo
 go run . ../assets/tests/input/err3.txt  waterloo st_pancras 4 | tee myfile.txt
 echo 
@@ -98,7 +99,7 @@ Test 7 - err4    -displays "Error" on stderr when station names are invalid. lon
 cd $project_root_dir
 cd cmd
 echo
-echo SART TEST 7
+echo START TEST 7
 echo
 go run . ../assets/tests/input/err4.txt  waterloo st_pancras 4 | tee myfile.txt
 echo 
@@ -114,7 +115,7 @@ echo
 cd $project_root_dir
 cd cmd
 echo
-echo SART TEST 8
+echo START TEST 8
 echo
 go run . ../assets/tests/input/err5.txt  waterloo st_pancras 4 | tee myfile.txt
 echo 
@@ -130,7 +131,7 @@ Test 9 - err6   -displays "Error" on stderr when a map contains more than 10000 
 cd $project_root_dir
 cd cmd
 echo
-echo SART TEST 9
+echo START TEST 9
 echo
 go run . ../assets/tests/input/err6.txt  waterloo st_pancras 4 | tee myfile.txt
 echo 
